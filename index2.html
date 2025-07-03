@@ -54,10 +54,14 @@
                         terintegrasi yang menyediakan data dan informasi statistik terkini untuk mendukung pengambilan keputusan
                         yang akurat dan berbasis data di Provinsi Lampung.
                     </p>
-                    <button class="cta-button" onclick="scrollToSection('dashboard')">
+                    <!-- <button class="cta-button" onclick="scrollToSection('dashboard')">
                         <i class="fas fa-chart-bar"></i>
                         Lihat Dashboard
-                    </button>
+                    </button> -->
+                    <a href="index.html" class="cta-button">
+                        <i class="fas fa-chart-bar"></i>
+                        Lihat Dashboard
+                    </a>
                 </div>
                 <div class="hero-image">
                     <div class="hero-image-container">
@@ -414,16 +418,9 @@
             document.getElementById('pengaduan').value = '';
         }
 
-        // Add scroll effect to navbar
+        // Navbar dengan warna tetap
         window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = 'linear-gradient(135deg, rgba(249, 115, 22, 0.9) 0%, rgba(154, 52, 18, 0.95) 100%)';
-                navbar.style.backdropFilter = 'blur(10px)';
-            } else {
-                navbar.style.background = 'linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(154, 52, 18, 0.98) 100%)';
-                navbar.style.backdropFilter = 'none';
-            }
+            // Warna navbar tidak berubah saat di-scroll
         });
 
         // Add animation to chart cards on scroll

@@ -143,7 +143,7 @@ body {
 .hero-section {
     padding: 4rem 1rem;
     background: 
-        linear-gradient(180deg, rgba(249, 115, 22, 0.9) 0%, rgba(13, 148, 136, 0.8) 100%);
+        linear-gradient(180deg, rgba(249, 115, 22, 0.95) 0%, rgba(13, 148, 136, 0.8) 100%);
     background-size: cover;
     min-height: 80vh;
     display: flex;
@@ -256,7 +256,7 @@ body {
 /* About Section */
 .about-section {
     padding: 5rem 1rem;
-    background: linear-gradient(180deg, rgba(13, 148, 136, 0.8) 0%, rgba(219, 234, 254, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(13, 148, 136, 0.8) 0%, #f3f4f6 100%);
     position: relative;
 }
 
@@ -374,7 +374,7 @@ body {
 /* Dashboard Section */
 .dashboard-section {
     padding: 5rem 1rem;
-    background: linear-gradient(180deg, rgba(219, 234, 254, 0.8) 0%, rgba(204, 251, 241, 0.8) 100%);
+    background: linear-gradient(180deg, #f3f4f6 0%, var(--light-blue) 100%);
 }
 
 .dashboard-section .section-title {
@@ -476,7 +476,7 @@ body {
 /* Tabulasi Section */
 .tabulasi-section {
     padding: 5rem 1rem;
-    background: linear-gradient(180deg, rgba(204, 251, 241, 0.8) 0%, rgba(254, 215, 170, 0.5) 100%);
+    background: linear-gradient(180deg, var(--light-blue) 0%, var(--light-teal) 100%);
 }
 
 .tabulasi-card {
@@ -571,7 +571,7 @@ body {
 /* Pengaduan Section */
 .pengaduan-section {
     padding: 5rem 1rem;
-    background: linear-gradient(180deg, rgba(254, 215, 170, 0.5) 0%, rgba(243, 244, 246, 0.8) 100%);
+    background: linear-gradient(180deg, var(--light-teal) 0%, #f3f4f6 100%);;
 }
 
 .pengaduan-section .section-title {
@@ -670,7 +670,7 @@ body {
 /* Contact Section */
 .contact-section {
     padding: 5rem 1rem;
-    background: linear-gradient(180deg, rgba(243, 244, 246, 0.8) 0%, rgba(15, 118, 110, 0.85) 100%);
+    background: linear-gradient(180deg, #f3f4f6 0%, rgba(15, 118, 110, 0.85) 100%);
     position: relative;
 }
 
