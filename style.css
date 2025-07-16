@@ -382,7 +382,9 @@ body {
 /* Dashboard Section */
 .dashboard-section {
     padding: 5rem 1rem;
-    background-color: var(--neutral-gray);
+    /* background-color: var(--); */
+        background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
+
 }
 
 .dashboard-section .section-title {
@@ -484,7 +486,8 @@ body {
 /* Tabulasi Section */
 .tabulasi-section {
     padding: 5rem 1rem;
-    background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
+    /* background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%); */
+    background-color: white;
 }
 
 .tabulasi-card {
@@ -579,7 +582,9 @@ body {
 /* Pengaduan Section */
 .pengaduan-section {
     padding: 5rem 1rem;
-    background-color: white;
+    /* background-color: white; */
+        background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
+
 }
 
 .pengaduan-section .section-title {
