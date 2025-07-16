@@ -583,12 +583,14 @@ body {
 .pengaduan-section {
     padding: 5rem 1rem;
     /* background-color: white; */
-        background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
+    /* background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%); */
+    background-color: #0093dd;
 
 }
 
 .pengaduan-section .section-title {
-    color: var(--primary-blue);
+    /* color: var(--primary-blue); */
+    color: white;
 }
 
 .pengaduan-header {
@@ -598,7 +600,8 @@ body {
 
 .section-description {
     font-size: 1.2rem;
-    color: var(--text-light);
+    /* color: var(--text-light); */
+    color: white;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -606,7 +609,8 @@ body {
 .pengaduan-card {
     max-width: 800px;
     margin: 0 auto;
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+    /* background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark)); */
+    background-color: var(--accent-orange);
     border-radius: 2rem;
     box-shadow: 0 20px 40px rgba(29, 78, 216, 0.3);
     overflow: hidden;
