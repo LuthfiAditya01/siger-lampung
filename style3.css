@@ -356,6 +356,13 @@ body {
     transition: transform 0.3s ease;
 }
 
+.logo-container img {
+    max-width: 100%;
+    height: auto;
+    width: 120px; /* Ukuran logo yang lebih kecil */
+    object-fit: contain;
+}
+
 .logo-container:hover {
     transform: translateY(-5px);
 }
