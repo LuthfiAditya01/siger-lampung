@@ -24,12 +24,12 @@ body {
 
 /* New Color Palette */
 :root {
-    --primary-blue: #1d4ed8;
-    --primary-blue-dark: #1e3a8a;
-    --secondary-teal: #0d9488;
-    --secondary-teal-dark: #0f766e;
-    --accent-orange: #ea580c;
-    --accent-orange-light: #fed7aa;
+    --primary-blue: #0093dd;
+    --primary-blue-dark: #006a9f;
+    --secondary-teal: #68b92e;
+    --secondary-teal-dark: #68b92e;
+    --accent-orange: #eb891b;
+    --accent-orange-light: #eb891b;
     --light-blue: #dbeafe;
     --light-teal: #ccfbf1;
     --neutral-gray: #f3f4f6;
@@ -42,7 +42,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(154, 52, 18, 0.98) 100%);
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.98) 0%, rgba(154, 52, 18, 1) 100%);
     box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
     transition: all 0.3s ease;
 }
@@ -143,7 +143,7 @@ body {
 .hero-section {
     padding: 4rem 1rem;
     background: 
-        linear-gradient(135deg, rgba(249, 115, 22, 0.6) 0%, rgba(154, 52, 18, 0.7) 100%);
+        linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
     background-size: cover;
     min-height: 80vh;
     display: flex;
@@ -256,7 +256,8 @@ body {
 /* About Section */
 .about-section {
     padding: 5rem 1rem;
-    background: linear-gradient(135deg, rgba(13, 148, 136, 0.8) 0%, rgba(15, 118, 110, 0.9) 100%);
+    /* background: linear-gradient(135deg, var(--secondary-teal) 0%, var(--secondary-teal-dark) 100%); */
+    background-color: white;
     position: relative;
 }
 
@@ -677,7 +678,7 @@ body {
 /* Contact Section */
 .contact-section {
     padding: 5rem 1rem;
-    background: linear-gradient(135deg, rgba(13, 148, 136, 0.75) 0%, rgba(15, 118, 110, 0.85) 100%);
+    background: linear-gradient(135deg, var(--secondary-teal) 0%, var(--secondary-teal-dark) 100%);
     position: relative;
 }
 
