@@ -1,197 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0" />
-    <title>SIGER LAMPUNG - Platform Data Statistik Provinsi Lampung</title>
-    <link
-      rel="stylesheet"
-      href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet" />
-  </head>
-  <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-brand">
-          <h1>SIGER LAMPUNG</h1>
-        </div>
 
-        <!-- Desktop Navigation -->
-        <div class="nav-menu">
-          <button
-            class="nav-link"
-            onclick="scrollToSection('hero')">
-            Beranda
-          </button>
-          <button
-            class="nav-link"
-            onclick="scrollToSection('about')">
-            Tentang
-          </button>
-          <button
-            class="nav-link"
-            onclick="scrollToSection('dashboard')">
-            Dashboard
-          </button>
-          <button
-            class="nav-link"
-            onclick="scrollToSection('tabulasi')">
-            Tabulasi
-          </button>
-          <button
-            class="nav-link"
-            onclick="scrollToSection('pengaduan')">
-            Pengaduan
-          </button>
-          <button
-            class="nav-link"
-            onclick="scrollToSection('contact')">
-            Kontak
-          </button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGER LAMPUNG - Platform Data Statistik Provinsi Lampung</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
 
-        <!-- Mobile menu button -->
-        <div class="mobile-menu-btn">
-          <button
-            onclick="toggleMobileMenu()"
-            aria-label="Toggle menu">
-            <i
-              class="fas fa-bars"
-              id="menu-icon"></i>
-          </button>
-        </div>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <h1>SIGER LAMPUNG</h1>
       </div>
 
-      <!-- Mobile Navigation -->
-      <div
-        class="mobile-menu"
-        id="mobile-menu">
-        <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('hero')">
+      <!-- Desktop Navigation -->
+      <div class="nav-menu">
+        <button class="nav-link" onclick="scrollToSection('hero')">
           Beranda
         </button>
-        <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('about')">
-          DTSEN
+        <button class="nav-link" onclick="scrollToSection('about')">
+          Tentang
         </button>
-        <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('dashboard')">
+        <button class="nav-link" onclick="scrollToSection('dashboard')">
           Dashboard
         </button>
-        <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('tabulasi')">
+        <button class="nav-link" onclick="scrollToSection('tabulasi')">
           Tabulasi
         </button>
-        <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('pengaduan')">
+        <button class="nav-link" onclick="scrollToSection('pengaduan')">
           Pengaduan
         </button>
+        <button class="nav-link" onclick="scrollToSection('contact')">
+          Kontak
+        </button>
       </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section
-      id="hero"
-      class="hero-section">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <h1 class="hero-title">Selamat Datang</h1>
-            <p class="hero-description">SIGER LAMPUNG (Sinergi Gerak Bersama Untuk Layanan Akurat Menuju Performas Unggu) adalah platform terintegrasi yang menyediakan data dan informasi statistik terkini untuk mendukung pengambilan keputusan yang akurat dan berbasis data di Provinsi Lampung.</p>
-            <!-- <button class="cta-button" onclick="scrollToSection('dashboard')">
+      <!-- Mobile menu button -->
+      <div class="mobile-menu-btn">
+        <button onclick="toggleMobileMenu()" aria-label="Toggle menu">
+          <i class="fas fa-bars" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-menu" id="mobile-menu">
+      <button class="mobile-nav-link" onclick="scrollToSection('hero')">
+        Beranda
+      </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('about')">
+        DTSEN
+      </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('dashboard')">
+        Dashboard
+      </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('tabulasi')">
+        Tabulasi
+      </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('pengaduan')">
+        Pengaduan
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1 class="hero-title">Selamat Datang</h1>
+          <p class="hero-description">SIGER LAMPUNG (Sinergi Gerak Bersama Untuk Layanan Akurat Menuju Performas Unggu)
+            adalah platform terintegrasi yang menyediakan data dan informasi statistik terkini untuk mendukung
+            pengambilan keputusan yang akurat dan berbasis data di Provinsi Lampung.</p>
+          <!-- <button class="cta-button" onclick="scrollToSection('dashboard')">
                         <i class="fas fa-chart-bar"></i>
                         Lihat Dashboard
                     </button> -->
-            <a
-              href="index2.html"
-              class="cta-button">
-              <i class="fas fa-chart-bar"></i>
-              Lihat Dashboard
-            </a>
-          </div>
-          <div class="hero-image">
-            <div class="hero-image-container">
-              <div class="hero-logo">
-                <img
-                  src="img/logo.png"
-                  alt="" />
-              </div>
+          <a href="index2.html" class="cta-button">
+            <i class="fas fa-chart-bar"></i>
+            Lihat Dashboard
+          </a>
+        </div>
+        <div class="hero-image">
+          <div class="hero-image-container">
+            <div class="hero-logo">
+              <img src="img/logo.png" alt="" />
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About Section -->
-    <section
-      id="about"
-      class="about-section">
-      <div class="container">
-        <h2 class="section-title">TENTANG</h2>
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <h2 class="section-title">TENTANG</h2>
 
-        <div class="about-grid">
-          <div class="about-card">
-            <div class="card-content">
-              <h3 class="card-title">DTSEN</h3>
-              <ul class="card-list">
-                <li>Sistem terintegrasi untuk pengelolaan data sosial ekonomi nasional yang akurat dan terpercaya</li>
-                <li>Mendukung program pemerintah dalam pengentasan kemiskinan melalui data yang valid dan terkini</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="about-card">
-            <div class="card-content">
-              <h3 class="card-title">SIGER LAMPUNG</h3>
-              <ul class="card-list">
-                <li>Platform digital yang menyajikan visualisasi data statistik Provinsi Lampung secara interaktif</li>
-                <li>Memfasilitasi akses informasi publik untuk mendukung transparansi dan akuntabilitas pemerintah daerah</li>
-              </ul>
-            </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="card-content">
+            <h3 class="card-title">DTSEN</h3>
+            <ul class="card-list">
+              <li>Sistem terintegrasi untuk pengelolaan data sosial ekonomi nasional yang akurat dan terpercaya</li>
+              <li>Mendukung program pemerintah dalam pengentasan kemiskinan melalui data yang valid dan terkini</li>
+            </ul>
           </div>
         </div>
 
-        <div class="partner-logos">
-          <div class="logo-container">
-            <img
-              src="img/logo-kemensos.png"
-              alt="" />
-          </div>
-          <div class="logo-container">
-            <img
-              src="img/logo-bps.png"
-              alt="" />
-          </div>
-          <div class="logo-container">
-            <img
-              src="img/logo_tnp2k.png"
-              alt="" />
+        <div class="about-card">
+          <div class="card-content">
+            <h3 class="card-title">SIGER LAMPUNG</h3>
+            <ul class="card-list">
+              <li>Platform digital yang menyajikan visualisasi data statistik Provinsi Lampung secara interaktif</li>
+              <li>Memfasilitasi akses informasi publik untuk mendukung transparansi dan akuntabilitas pemerintah daerah
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Dashboard Section -->
-    <section
-      id="dashboard"
-      class="dashboard-section">
-      <div class="container">
-        <div class="dashboard-header">
-          <h2 class="section-title">DASHBOARD</h2>
-          <div class="select-container">
+      <div class="partner-logos">
+        <div class="logo-container">
+          <img src="img/logo-kemensos.png" alt="" />
+        </div>
+        <div class="logo-container">
+          <img src="img/logo-bps.png" alt="" />
+        </div>
+        <div class="logo-container">
+          <img src="img/logo_tnp2k.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Section -->
+  <section id="dashboard" class="dashboard-section">
+    <div class="container">
+      <div class="dashboard-header">
+        <h2 class="section-title">DASHBOARD</h2>
+        <!-- <div class="select-container">
             <select
               class="custom-select"
               id="region-select">
@@ -212,12 +166,47 @@
               <option value="Tulang Bawang Barat">Tulang Bawang Barat</option>
               <option value="Way Kanan">Way Kanan</option>
             </select>
-          </div>
-        </div>
+          </div> -->
+      </div>
 
-        <!-- Dashboard Tableau - Full Width -->
-        <div class="dashboard-tableau">
-          <div
+      <!-- Dashboard Tableau - Full Width -->
+      <div class="dashboard-tableau">
+        <div class='tableauPlaceholder' id='viz1753084151105' style='position: relative'><noscript><a href='#'><img
+                alt=' '
+                src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;si&#47;siger2&#47;Perumahan&#47;1_rss.png'
+                style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+            <param name='embed_code_version' value='3' />
+            <param name='site_root' value='' />
+            <param name='name' value='siger2&#47;Perumahan' />
+            <param name='tabs' value='yes' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image'
+              value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;si&#47;siger2&#47;Perumahan&#47;1.png' />
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' /></object></div>
+        <script type='text/javascript'>
+          var divElement = document.getElementById('viz1753084151105');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          if (divElement.offsetWidth > 800) {
+            vizElement.style.width = '100%';
+            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          } else if (divElement.offsetWidth > 500) {
+            vizElement.style.width = '100%';
+            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          } else {
+            vizElement.style.width = '100%';
+            vizElement.style.height = '1350px';
+          }
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        </script>
+        <!-- <div
             class="tableauPlaceholder"
             id="viz1753080376618"
             style="position: relative; width: 100%">
@@ -287,13 +276,13 @@
             var scriptElement = document.createElement("script");
             scriptElement.src = "https://public.tableau.com/javascripts/api/viz_v1.js";
             vizElement.parentNode.insertBefore(scriptElement, vizElement);
-          </script>
-        </div>
+          </script> -->
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Tabulasi Section -->
-    <!-- <section
+  <!-- Tabulasi Section -->
+  <!-- <section
       id="tabulasi"
       class="tabulasi-section">
       <div class="container">
@@ -358,230 +347,204 @@
       </div>
     </section> -->
 
-    <!-- Pengaduan Section -->
-    <section
-      id="pengaduan"
-      class="pengaduan-section">
-      <div class="container">
-        <div class="pengaduan-header">
-          <h2 class="section-title">PENGADUAN</h2>
-          <p class="section-description">Kami terbuka dalam menerima pendapat, saran, dan masukan dari berbagai pihak</p>
-        </div>
-
-        <div class="pengaduan-card">
-          <form
-            class="pengaduan-form"
-            onsubmit="submitPengaduan(event)">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Nama/Anonim"
-              id="nama" />
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Alamat (Boleh Kosong)"
-              id="alamat" />
-            <input
-              type="email"
-              class="form-input"
-              placeholder="Email (Opsional)"
-              id="email" />
-            <textarea
-              class="form-textarea"
-              placeholder="Isi pengaduan, saran, atau masukan Anda di sini..."
-              rows="6"
-              id="pengaduan"></textarea>
-            <button
-              type="submit"
-              class="btn-submit">
-              <i class="fas fa-paper-plane"></i>
-              Kirim Pengaduan
-            </button>
-          </form>
-        </div>
+  <!-- Pengaduan Section -->
+  <section id="pengaduan" class="pengaduan-section">
+    <div class="container">
+      <div class="pengaduan-header">
+        <h2 class="section-title">PENGADUAN</h2>
+        <p class="section-description">Kami terbuka dalam menerima pendapat, saran, dan masukan dari berbagai pihak</p>
       </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section
-      id="contact"
-      class="contact-section">
-      <div class="container">
-        <div class="contact-header">
-          <h2
-            class="section-title"
-            style="color: white">
-            KONTAK
-          </h2>
-          <p
-            class="section-description"
-            style="color: white">
-            Untuk informasi lebih lanjut, Anda dapat menghubungi kontak di bawah ini
-          </p>
+      <div class="pengaduan-card">
+        <form class="pengaduan-form" onsubmit="submitPengaduan(event)">
+          <input type="text" class="form-input" placeholder="Nama/Anonim" id="nama" />
+          <input type="text" class="form-input" placeholder="Alamat (Boleh Kosong)" id="alamat" />
+          <input type="email" class="form-input" placeholder="Email (Opsional)" id="email" />
+          <textarea class="form-textarea" placeholder="Isi pengaduan, saran, atau masukan Anda di sini..." rows="6"
+            id="pengaduan"></textarea>
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-paper-plane"></i>
+            Kirim Pengaduan
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="contact-header">
+        <h2 class="section-title" style="color: white">
+          KONTAK
+        </h2>
+        <p class="section-description" style="color: white">
+          Untuk informasi lebih lanjut, Anda dapat menghubungi kontak di bawah ini
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15887.463331200715!2d105.27799865!3d-5.4373384499999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40dbc995555555%3A0x99d597a84cdf184d!2sThe%20Central%20Bureau%20of%20Statistics%20of%20Bandar%20Lampung!5e0!3m2!1sen!2sid!4v1751444508053!5m2!1sen!2sid"
+            width="100%" height="100%" style="border: 0; border-radius: 1rem; display: block" allowfullscreen
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
 
-        <div class="contact-grid">
-          <div class="map-container">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15887.463331200715!2d105.27799865!3d-5.4373384499999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40dbc995555555%3A0x99d597a84cdf184d!2sThe%20Central%20Bureau%20of%20Statistics%20of%20Bandar%20Lampung!5e0!3m2!1sen!2sid!4v1751444508053!5m2!1sen!2sid"
-              width="100%"
-              height="100%"
-              style="border: 0; border-radius: 1rem; display: block"
-              allowfullscreen
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Telepon</h3>
+              <p>08XX XXXX XXXX</p>
+            </div>
           </div>
 
-          <div class="contact-info">
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-phone"></i>
-              </div>
-              <div class="contact-details">
-                <h3>Telepon</h3>
-                <p>08XX XXXX XXXX</p>
-              </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
             </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div class="contact-details">
-                <h3>Email</h3>
-                <p>loremipsum@bandarlampung.go.id</p>
-              </div>
+            <div class="contact-details">
+              <h3>Email</h3>
+              <p>loremipsum@bandarlampung.go.id</p>
             </div>
+          </div>
 
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div class="contact-details">
-                <h3>Alamat</h3>
-                <p>Badan Pusat Statistik<br />Kota Bandar Lampung</p>
-              </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h3>Alamat</h3>
+              <p>Badan Pusat Statistik<br />Kota Bandar Lampung</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <p class="footer-text">
-            HAK CIPTA &copy;
-            <span class="footer-brand">SIGER LAMPUNG DTSEN</span>
-          </p>
-          <p class="footer-copyright">&copy; 2024 Semua hak dilindungi undang-undang</p>
-        </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          HAK CIPTA &copy;
+          <span class="footer-brand">SIGER LAMPUNG DTSEN</span>
+        </p>
+        <p class="footer-copyright">&copy; 2024 Semua hak dilindungi undang-undang</p>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <script>
-      let isMobileMenuOpen = false;
+  <script>
+    let isMobileMenuOpen = false;
 
-      function toggleMobileMenu() {
-        const mobileMenu = document.getElementById("mobile-menu");
-        const menuIcon = document.getElementById("menu-icon");
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById("mobile-menu");
+      const menuIcon = document.getElementById("menu-icon");
 
-        isMobileMenuOpen = !isMobileMenuOpen;
+      isMobileMenuOpen = !isMobileMenuOpen;
 
-        if (isMobileMenuOpen) {
-          mobileMenu.classList.add("active");
-          menuIcon.className = "fas fa-times";
-        } else {
-          mobileMenu.classList.remove("active");
-          menuIcon.className = "fas fa-bars";
-        }
+      if (isMobileMenuOpen) {
+        mobileMenu.classList.add("active");
+        menuIcon.className = "fas fa-times";
+      } else {
+        mobileMenu.classList.remove("active");
+        menuIcon.className = "fas fa-bars";
+      }
+    }
+
+    function scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+      // Close mobile menu if open
+      if (isMobileMenuOpen) {
+        toggleMobileMenu();
+      }
+    }
+
+    function showTabulation() {
+      const tabulationType = document.getElementById("tabulation-select").value;
+      const region = document.getElementById("tabulation-region").value;
+
+      if (tabulationType && region) {
+        alert(`Menampilkan tabulasi: ${tabulationType} untuk wilayah: ${region}`);
+      } else {
+        alert("Silakan pilih jenis tabulasi dan wilayah terlebih dahulu");
+      }
+    }
+
+    function resetTabulation() {
+      document.getElementById("tabulation-select").value = "";
+      document.getElementById("tabulation-region").value = "";
+    }
+
+    function submitPengaduan(event) {
+      event.preventDefault();
+      const nama = document.getElementById("nama").value;
+      const pengaduan = document.getElementById("pengaduan").value;
+
+      if (!nama || !pengaduan) {
+        alert("Mohon isi nama dan isi pengaduan");
+        return;
       }
 
-      function scrollToSection(sectionId) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-        // Close mobile menu if open
-        if (isMobileMenuOpen) {
-          toggleMobileMenu();
-        }
+      alert("Pengaduan berhasil dikirim! Terima kasih atas masukan Anda.");
+
+      // Reset form
+      document.getElementById("nama").value = "";
+      document.getElementById("alamat").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("pengaduan").value = "";
+    }
+
+    // Add scroll effect to navbar
+    window.addEventListener("scroll", function () {
+      const navbar = document.querySelector(".navbar");
+      if (window.scrollY > 50) {
+        navbar.style.background =
+          "linear-gradient(135deg, rgba(249, 115, 22, 0.9) 0%, rgba(154, 52, 18, 0.95) 100%)";
+        navbar.style.backdropFilter = "blur(10px)";
+      } else {
+        navbar.style.background =
+          "linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(154, 52, 18, 0.98) 100%)";
+        navbar.style.backdropFilter = "none";
       }
+    });
 
-      function showTabulation() {
-        const tabulationType = document.getElementById("tabulation-select").value;
-        const region = document.getElementById("tabulation-region").value;
+    // Add animation to chart cards on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
 
-        if (tabulationType && region) {
-          alert(`Menampilkan tabulasi: ${tabulationType} untuk wilayah: ${region}`);
-        } else {
-          alert("Silakan pilih jenis tabulasi dan wilayah terlebih dahulu");
-        }
-      }
-
-      function resetTabulation() {
-        document.getElementById("tabulation-select").value = "";
-        document.getElementById("tabulation-region").value = "";
-      }
-
-      function submitPengaduan(event) {
-        event.preventDefault();
-        const nama = document.getElementById("nama").value;
-        const pengaduan = document.getElementById("pengaduan").value;
-
-        if (!nama || !pengaduan) {
-          alert("Mohon isi nama dan isi pengaduan");
-          return;
-        }
-
-        alert("Pengaduan berhasil dikirim! Terima kasih atas masukan Anda.");
-
-        // Reset form
-        document.getElementById("nama").value = "";
-        document.getElementById("alamat").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("pengaduan").value = "";
-      }
-
-      // Add scroll effect to navbar
-      window.addEventListener("scroll", function () {
-        const navbar = document.querySelector(".navbar");
-        if (window.scrollY > 50) {
-          navbar.style.background = "linear-gradient(135deg, rgba(249, 115, 22, 0.9) 0%, rgba(154, 52, 18, 0.95) 100%)";
-          navbar.style.backdropFilter = "blur(10px)";
-        } else {
-          navbar.style.background = "linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(154, 52, 18, 0.98) 100%)";
-          navbar.style.backdropFilter = "none";
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
         }
       });
+    }, observerOptions);
 
-      // Add animation to chart cards on scroll
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      };
-
-      const observer = new IntersectionObserver(function (entries) {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
-          }
-        });
-      }, observerOptions);
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const chartCards = document.querySelectorAll(".chart-card");
-        chartCards.forEach((card) => {
-          card.style.opacity = "0";
-          card.style.transform = "translateY(20px)";
-          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-          observer.observe(card);
-        });
+    document.addEventListener("DOMContentLoaded", function () {
+      const chartCards = document.querySelectorAll(".chart-card");
+      chartCards.forEach((card) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(card);
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
