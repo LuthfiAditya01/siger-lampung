@@ -144,7 +144,7 @@
   <section id="dashboard" class="dashboard-section">
     <div class="container">
       <div class="dashboard-header">
-        <h2 class="section-title">DASHBOARD</h2>
+        <h2 class="section-title" >DASHBOARD</h2>
         <!-- <div class="select-container">
             <select
               class="custom-select"
@@ -192,16 +192,22 @@
         <script type='text/javascript'>
           var divElement = document.getElementById('viz1753084151105');
           var vizElement = divElement.getElementsByTagName('object')[0];
+          
+          // Calculate max height based on viewport
+          var maxHeight = window.innerHeight - 250; // Reserve space for header and padding
+          var calculatedHeight = divElement.offsetWidth * 0.75;
+          
           if (divElement.offsetWidth > 800) {
             vizElement.style.width = '100%';
-            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+            vizElement.style.height = Math.min(calculatedHeight, maxHeight) + 'px';
           } else if (divElement.offsetWidth > 500) {
             vizElement.style.width = '100%';
-            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+            vizElement.style.height = Math.min(calculatedHeight, maxHeight) + 'px';
           } else {
             vizElement.style.width = '100%';
-            vizElement.style.height = '1350px';
+            vizElement.style.height = Math.min(800, maxHeight) + 'px';
           }
+          
           var scriptElement = document.createElement('script');
           scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
           vizElement.parentNode.insertBefore(scriptElement, vizElement);
