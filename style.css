@@ -211,7 +211,7 @@ body {
 }
 
 .hero-image-container {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 1);
     backdrop-filter: blur(10px);
     border-radius: 2rem;
     padding: 3rem;
@@ -289,6 +289,7 @@ body {
     font-size: 3rem;
     font-weight: 800;
     text-align: center;
+    margin-top: 4rem;
     margin-bottom: 3rem;
     color: var(--primary-blue);
     position: relative;
@@ -296,13 +297,16 @@ body {
 }
 
 .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;      /* ini yang bikin tetap center meski jumlah ganjil */
     gap: 2rem;
     margin-bottom: 3rem;
     position: relative;
     z-index: 2;
 }
+
+
 
 .about-card {
     background: rgba(255, 255, 255, 0.95);
@@ -310,10 +314,31 @@ body {
     border-radius: 1.5rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; 
+    flex: 1 1 300px;              /* grow, shrink, basis */
+    max-width: 400px;             /* agar tidak terlalu besar di layar lebar */
+    min-width: 250px;             /* agar tetap bagus di HP */
+    box-sizing: border-box;
 }
 
 .about-card:hover {
+    transform: translateY(-10px);
+}
+
+.about-card-1 {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease; 
+    flex: 1 1 300px;              /* grow, shrink, basis */
+    max-width: 800px;             /* agar tidak terlalu besar di layar lebar */
+    min-width: 250px;             /* agar tetap bagus di HP */
+    box-sizing: border-box;
+}
+
+.about-card-1:hover {
     transform: translateY(-10px);
 }
 
@@ -426,7 +451,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 7rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
     gap: 1rem;
     text-align: center;
@@ -660,8 +685,6 @@ body {
     /* color: var(--primary-blue); */
     color: white;
 }
-
-
 
 .pengaduan-header {
     text-align: center;
