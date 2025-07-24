@@ -20,21 +20,7 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="../css/output.css" />
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
-    <style>
-        /* Tambahkan class khusus untuk mode collapsed */
-        .collapsed .sidebar-text {
-            display: none;
-        }
 
-        .collapsed .justify-start {
-            justify-content: center;
-        }
-
-        .collapsed .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-    </style>
 </head>
 
 <body class="bg-gray-100">
@@ -56,8 +42,8 @@ if (!isset($_SESSION['user_id'])) {
 
                 <!-- Content -->
                 <div class="bg-white shadow-md rounded-lg p-6 mb-5">
-                    <h2 class="text-2xl font-semibold mb-4">Welcome to Admin Dashboard</h2>
-                    <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p>
+                    <h2 class="text-2xl font-semibold mb-4">Selamat Datang di Dashboard</h2>
+                    <!-- <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p> -->
                 </div>
 
                 <!-- Tableau -->

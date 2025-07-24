@@ -20,18 +20,45 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
     <style>
-        /* Tambahkan class khusus untuk mode collapsed */
-        .collapsed .sidebar-text {
-            display: none;
+        /* Gradient button with smooth transition */
+        .gradient-btn {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        .collapsed .justify-start {
-            justify-content: center;
+        .gradient-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, #0891b2, #2563eb);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 1;
         }
 
-        .collapsed .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
+        .gradient-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom left, #0891b2, #2563eb);
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gradient-btn:hover::before {
+            opacity: 0;
+        }
+
+        .gradient-btn:hover::after {
+            opacity: 1;
         }
     </style>
 </head>
@@ -39,7 +66,6 @@ if (!isset($_SESSION['user_id'])) {
 <body class="bg-gray-100">
     <div class="flex h-screen overflow-hidden">
         <?php include '../components/aside.php'; ?>
-
         <!-- Main Content -->
         <main id="mainContent" class="flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out">
             <div class="p-6">
@@ -50,61 +76,37 @@ if (!isset($_SESSION['user_id'])) {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    <h1 class="text-2xl font-semibold ml-4">Dashboard</h1>
+                    <h1 class="text-2xl font-semibold ml-4">Pencarian</h1>
                 </div>
 
                 <!-- Content -->
                 <div class="bg-white shadow-md rounded-lg p-6 mb-5">
-                    <h2 class="text-2xl font-semibold mb-4">Welcome to Admin Dashboard</h2>
-                    <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p>
+                    <h2 class="text-2xl font-semibold mb-4">Halaman Pencarian</h2>
+                    <!-- <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p> -->
                 </div>
 
                 <!-- Tableau -->
                 <div class="bg-white shadow-md rounded-lg p-6">
-                    <!-- <h2 class="text-2xl font-semibold mb-4">Dimensi Wilayah</h2> -->
-                    <div class='tableauPlaceholder' id='viz1753325516855' style='width: 100%; height: 800px; position: relative; margin-top: 20px;'>
-                        <noscript>
-                            <a href='#'>
-                                <img alt=' '
-                                    src='https://public.tableau.com/static/images/Da/DashboardSIGERLAMPUNG-BPS1871/Wilayah_1/1_rss.png'
-                                    style='border: none' />
-                            </a>
-                        </noscript>
-                        <object class='tableauViz' style='width: 100%; height: 100%;'>
-                            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-                            <param name='embed_code_version' value='3' />
-                            <param name='site_root' value='' />
-                            <param name='name' value='DashboardSIGERLAMPUNG-BPS1871&#47;Wilayah_1' />
-                            <param name='tabs' value='yes' />
-                            <param name='toolbar' value='yes' />
-                            <param name='static_image'
-                                value='https://public.tableau.com/static/images/Da/DashboardSIGERLAMPUNG-BPS1871/Wilayah_1/1.png' />
-                            <param name='animate_transition' value='yes' />
-                            <param name='display_static_image' value='yes' />
-                            <param name='display_spinner' value='yes' />
-                            <param name='display_overlay' value='yes' />
-                            <param name='display_count' value='yes' />
-                            <param name='language' value='en-US' />
-                        </object>
-                    </div>
+                    <form action="#" method="post">
+                        <div>
+                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor KK</label>
+                            <input type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
+                            <input type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500"> <br>
+                        </div>
+                        <!-- <button type="submit" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:to-cyan-500 hover:from-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Submit</button> -->
+                        <div class="mt-6">
+                            <button type="submit" class="gradient-btn text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:to-cyan-500 hover:from-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition ease-out">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Tableau Initialization Script -->
-    <script type="text/javascript">
-        var divElement = document.getElementById('viz1753325516855');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        if (vizElement) {
-            vizElement.style.width = '100%';
-            vizElement.style.minHeight = '800px';
-            vizElement.style.maxHeight = '900px';
-            vizElement.style.height = (divElement.offsetWidth * 0.65) + 'px';
-            var scriptElement = document.createElement('script');
-            scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-            vizElement.parentNode.insertBefore(scriptElement, vizElement);
-        }
-    </script>
+
 </body>
+
 </html>
