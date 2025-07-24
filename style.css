@@ -458,29 +458,26 @@ body {
 }
 
 .dashboard-tableau {
-    width: 95%;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 1.5rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    height: calc(100vh - 300px);
-    flex: 1;
-    margin-bottom: 40px;
-    padding-left: 60px;
-    padding-right: 60px;
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto 40px auto;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 60px;
+  height: calc(100vh - 300px);
 }
 
 .dashboard-tableau .tableauPlaceholder {
-    /* margin: 0 auto; */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .select-container {
