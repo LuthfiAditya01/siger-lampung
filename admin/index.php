@@ -20,6 +20,7 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="../css/output.css" />
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
 
 </head>
 

@@ -15,8 +15,9 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Siger Lampung</title>
+    <title>Admin Pencarian - Siger Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
     <style>
@@ -90,11 +91,11 @@ if (!isset($_SESSION['user_id'])) {
                     <form action="#" method="post">
                         <div>
                             <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor KK</label>
-                            <input type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
+                            <input type="number" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
                             <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
-                            <input type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500"> <br>
+                            <input type="number" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500"> <br>
                         </div>
                         <!-- <button type="submit" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:to-cyan-500 hover:from-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Submit</button> -->
                         <div class="mt-6">
@@ -105,8 +106,6 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </main>
     </div>
-
-
 </body>
 
 </html>
