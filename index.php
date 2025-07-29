@@ -1,3 +1,43 @@
+<?php
+include 'koneksi.php';
+
+// Inisialisasi variabel hasil
+$hasil = null;
+$pesan = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Jika tombol Reset ditekan
+  if (isset($_POST['reset'])) {
+    // Kosongkan hasil pencarian dan pesan
+    $hasil = null;
+    $pesan = '';
+    $_POST['kk'] = '';
+    $_POST['nik'] = '';
+  } else {
+    $kk = $_POST['kk'] ?? '';
+    $nik = $_POST['nik'] ?? '';
+
+    if (strlen($kk) !== 16 || strlen($nik) !== 16) {
+      $pesan = "Nomor KK dan NIK harus 16 digit.";
+    } else {
+      $query = "SELECT nomor_kartu_keluarga, nomor_induk_kependudukan, desil_nasional 
+                      FROM dtsen 
+                      WHERE nomor_kartu_keluarga = ? AND nomor_induk_kependudukan = ? 
+                      LIMIT 1";
+      $stmt = $conn->prepare($query);
+      $stmt->bind_param("ss", $kk, $nik);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $hasil = $result->fetch_assoc();
+
+      if (!$hasil) {
+        $pesan = "Data Tidak Ditemukan";
+      }
+    }
+  }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -6,9 +46,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIGER LAMPUNG - Platform Data Statistik Provinsi Lampung</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/output.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Add Heroicons via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 
 <body>
@@ -30,11 +81,9 @@
         <button class="nav-link" onclick="scrollToSection('dashboard')">
           Dashboard
         </button>
-        <!-- <button
-            class="nav-link"
-            onclick="scrollToSection('tabulasi')">
-            Tabulasi
-          </button> -->
+        <button class="nav-link" onclick="scrollToSection('tabulasi')">
+          Pencarian
+        </button>
         <button class="nav-link" onclick="scrollToSection('pengaduan')">
           Pengaduan
         </button>
@@ -62,11 +111,9 @@
       <button class="mobile-nav-link" onclick="scrollToSection('dashboard')">
         Dashboard
       </button>
-      <button
-          class="mobile-nav-link"
-          onclick="scrollToSection('data')">
-          Data
-        </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('data')">
+        Data
+      </button>
       <button class="mobile-nav-link" onclick="scrollToSection('pengaduan')">
         Pengaduan
       </button>
@@ -82,16 +129,6 @@
           <p class="hero-description">SIGER LAMPUNG (Sinergi Gerak Bersama Untuk Layanan Akurat Menuju Performas Unggu)
             adalah platform terintegrasi yang menyediakan data dan informasi statistik terkini untuk mendukung
             pengambilan keputusan yang akurat dan berbasis data di Provinsi Lampung.</p>
-          <!-- <button class="cta-button" onclick="scrollToSection('dashboard')">
-                        <i class="fas fa-chart-bar"></i>
-                        Lihat Dashboard
-                    </button> -->
-          <!-- <a
-              href="index2.html"
-              class="cta-button">
-              <i class="fas fa-chart-bar"></i>
-              Lihat Dashboard
-            </a> -->
         </div>
         <div class="hero-image">
           <div class="hero-image-container">
@@ -156,78 +193,8 @@
   <!-- Dashboard Section -->
   <section id="dashboard" class="dashboard-section">
     <div class="container">
-      <!-- <div class="dashboard-header"> -->
-        <!-- <h2 class="section-title">DASHBOARD</h2> -->
-        <!-- <div class="select-container">
-            <select
-              class="custom-select"
-              id="region-select">
-              <option value="">Pilih Kabupaten/Kota</option>
-              <option value="Bandar Lampung">Bandar Lampung</option>
-              <option value="Metro">Metro</option>
-              <option value="Lampung Barat">Lampung Barat</option>
-              <option value="Lampung Selatan">Lampung Selatan</option>
-              <option value="Lampung Tengah">Lampung Tengah</option>
-              <option value="Lampung Timur">Lampung Timur</option>
-              <option value="Lampung Utara">Lampung Utara</option>
-              <option value="Mesuji">Mesuji</option>
-              <option value="Pesawaran">Pesawaran</option>
-              <option value="Pesisir Barat">Pesisir Barat</option>
-              <option value="Pringsewu">Pringsewu</option>
-              <option value="Tanggamus">Tanggamus</option>
-              <option value="Tulang Bawang">Tulang Bawang</option>
-              <option value="Tulang Bawang Barat">Tulang Bawang Barat</option>
-              <option value="Way Kanan">Way Kanan</option>
-            </select>
-          </div> -->
-      <!-- </div> -->
 
       <!-- Dashboard Tableau - Full Width -->
-      <!-- <div class="dashboard-tableau" style="background-color:#f5f5f5">
-        <div class='tableauPlaceholder' id='viz1753325356999' style='position: relative'><noscript><a href='#'><img
-                alt=' '
-                src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard&#47;1_rss.png'
-                style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'>
-            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-            <param name='embed_code_version' value='3' />
-            <param name='site_root' value='' />
-            <param name='name' value='DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard' />
-            <param name='tabs' value='yes' />
-            <param name='toolbar' value='yes' />
-            <param name='static_image'
-              value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard&#47;1.png' />
-            <param name='animate_transition' value='yes' />
-            <param name='display_static_image' value='yes' />
-            <param name='display_spinner' value='yes' />
-            <param name='display_overlay' value='yes' />
-            <param name='display_count' value='yes' />
-            <param name='language' value='en-US' /></object></div>
-        <script type='text/javascript'>
-          var divElement = document.getElementById('viz1753325356999');
-          var vizElement = divElement.getElementsByTagName('object')[0];
-          if (divElement.offsetWidth > 800) {
-            vizElement.style.minWidth = '800px';
-            vizElement.style.maxWidth = '1200px';
-            vizElement.style.width = '100%';
-            vizElement.style.minHeight = '500px';
-            vizElement.style.maxHeight = '725px';
-            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-          } else if (divElement.offsetWidth > 500) {
-            vizElement.style.minWidth = '800px';
-            vizElement.style.maxWidth = '1200px';
-            vizElement.style.width = '100%';
-            vizElement.style.minHeight = '500px';
-            vizElement.style.maxHeight = '725px';
-            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-          } else {
-            vizElement.style.width = '100%';
-            vizElement.style.height = '1350px';
-          }
-          var scriptElement = document.createElement('script');
-          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-          vizElement.parentNode.insertBefore(scriptElement, vizElement);
-        </script>
-      </div> -->
       <div class="dashboard-tableau">
         <div class='tableauPlaceholder' id='viz1753325516855' style='width: 100%; height: 100%; position: relative;'>
           <noscript>
@@ -269,112 +236,71 @@
     </div>
   </section>
 
-  <!-- Tabulasi Section -->
-  <!-- <section
-      id="tabulasi"
-      class="tabulasi-section">
-      <div class="container">
-        <h2
-          class="section-title"
-          style="color: #006a9f">
-          TABULASI
-        </h2>
+  <!-- Pencarian Section -->
+  <section id="tabulasi" class="tabulasi-section">
+    <div class="container">
+      <h2 class="section-title" style="color: #006a9f">
+        PENCARIAN
+      </h2>
 
-        <div class="tabulasi-card">
-          <div class="tabulasi-controls">
-            <select
-              class="custom-select"
-              id="tabulation-select">
-              <option value="">Jenis Tabulasi</option>
-              <option value="luas-wilayah">Luas wilayah Kota Bandar Lampung</option>
-              <option value="penduduk">Penduduk Kota Bandar Lampung</option>
-              <option value="garis-kemiskinan">Garis kemiskinan Kota Bandar Lampung (Rp/Kapita/Bulan)</option>
-              <option value="penduduk-miskin">Penduduk Miskin Kota Bandar Lampung</option>
-              <option value="progress-dokumen">Progress pemasukan dokumen GC DTSEN</option>
-              <option value="indeks-kedalaman">Indeks kedalaman kemiskinan (PI) Kota Bandar Lampung</option>
-              <option value="pengeluaran">Pengeluaran per kapita</option>
-              <option value="indeks-keparahan">Indeks keparahan kemiskinan (P2) Kota Bandar Lampung</option>
-            </select>
+      <div class="tabulasi-card">
+        <div class="dashboard-tableau" style="max-height:500px; background-color: #0093dd;">
+          <!-- Pencarian -->
+          <div style="width:100%;">
+            <form action="" method="post" style="width:100%;">
+              <div>
+                <label class="block mb-2 text-sm text-white font-medium text-gray-900">Masukkan Nomor KK</label>
+                <input type="number" name="kk"
+                  value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['kk'] ?? '') ?>"
+                  class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
+                  required>
+              </div>
+              <br>
+              <div class="mt-4">
+                <label class="block mb-2 text-sm text-white font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
+                <input type="number" name="nik"
+                  value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
+                  class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
+                  required>
+              </div>
 
-            <select
-              class="custom-select"
-              id="tabulation-region">
-              <option value="">Pilih Kabupaten/Kota</option>
-              <option value="Bandar Lampung">Bandar Lampung</option>
-              <option value="Metro">Metro</option>
-              <option value="Lampung Barat">Lampung Barat</option>
-              <option value="Lampung Selatan">Lampung Selatan</option>
-              <option value="Lampung Tengah">Lampung Tengah</option>
-              <option value="Lampung Timur">Lampung Timur</option>
-              <option value="Lampung Utara">Lampung Utara</option>
-              <option value="Mesuji">Mesuji</option>
-              <option value="Pesawaran">Pesawaran</option>
-              <option value="Pesisir Barat">Pesisir Barat</option>
-              <option value="Pringsewu">Pringsewu</option>
-              <option value="Tanggamus">Tanggamus</option>
-              <option value="Tulang Bawang">Tulang Bawang</option>
-              <option value="Tulang Bawang Barat">Tulang Bawang Barat</option>
-              <option value="Way Kanan">Way Kanan</option>
-            </select>
+              <div class="mt-6">
+                <button type="submit" class="custom-btn-f">Cari</button>
+                <button type="submit" name="reset" value="1"
+                  class="custom-btn-f bg-gray-200 text-gray-700 hover:bg-gray-300">
+                  Reset
+                </button>
+              </div>
+            </form>
 
-            <div class="button-group">
-              <button
-                class="btn-primary"
-                onclick="showTabulation()">
-                <i class="fas fa-file-alt"></i>
-                Tampilkan
-              </button>
-              <button
-                class="btn-secondary"
-                onclick="resetTabulation()">
-                Reset
-              </button>
-            </div>
+            <?php if ($hasil): ?>
+              <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
+                <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
+                <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
+                <p><strong>Desil Nasional:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
+              </div>
+            <?php elseif ($pesan): ?>
+              <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">
+                <?= $pesan ?>
+              </div>
+            <?php endif; ?>
           </div>
+
+
+          <!-- </div> -->
         </div>
+
       </div>
-    </section> -->
+      <!-- </div> -->
+  </section>
 
   <!-- Pengaduan Section -->
   <section id="pengaduan" class="pengaduan-section">
     <div class="container">
       <div class="pengaduan-header">
         <h2 class="section-title">PENGADUAN</h2>
-        <!-- <p class="section-description">Dapat kami sampaikan bahwa dalam menjaga Zona Integritas Wilayah Bebas Korupsi serta Wilayah Birokrasi Bersih dan Melayani, BPS Kota Bandar Lampung berkomitmen untuk selalu menjaga integritas. Pelanggaran atas ketentuan tersebut, dapat dilaporkan melalui <i>whistle blowing system</i> BPS melalui beberapa cara sebagai berikut </p> -->
       </div>
 
-      <!-- <div class="pengaduan-card">
-          <form
-            class="pengaduan-form"
-            onsubmit="submitPengaduan(event)">
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Nama/Anonim"
-              id="nama" />
-            <input
-              type="text"
-              class="form-input"
-              placeholder="Alamat (Boleh Kosong)"
-              id="alamat" />
-            <input
-              type="email"
-              class="form-input"
-              placeholder="Email (Opsional)"
-              id="email" />
-            <textarea
-              class="form-textarea"
-              placeholder="Isi pengaduan, saran, atau masukan Anda di sini..."
-              rows="6"
-              id="pengaduan"></textarea>
-            <button
-              type="submit"
-              class="btn-submit">
-              <i class="fas fa-paper-plane"></i>
-              Kirim Pengaduan
-            </button>
-          </form>
-        </div> -->
       <div class="about-grid">
         <p class="deskripsipengaduan" style="color: white; text-align: center;" ;>Dapat kami sampaikan bahwa dalam
           menjaga <b>Zona Integritas</b> menuju <b>Wilayah Bebas Korupsi</b> serta <b>Wilayah Birokrasi Bersih dan
@@ -551,7 +477,7 @@
     }
 
     // Add scroll effect to navbar
-    window.addEventListener("scroll", function () {
+    window.addEventListener("scroll", function() {
       const navbar = document.querySelector(".navbar");
       if (window.scrollY > 50) {
         navbar.style.background =
@@ -570,7 +496,7 @@
       rootMargin: "0px 0px -50px 0px",
     };
 
-    const observer = new IntersectionObserver(function (entries) {
+    const observer = new IntersectionObserver(function(entries) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.style.opacity = "1";
@@ -579,7 +505,7 @@
       });
     }, observerOptions);
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const chartCards = document.querySelectorAll(".chart-card");
       chartCards.forEach((card) => {
         card.style.opacity = "0";
@@ -589,6 +515,33 @@
       });
     });
   </script>
+  <script>
+    function validasiForm() {
+      const kk = document.getElementById("kk").value;
+      const nik = document.getElementById("nik").value;
+
+      if (kk.length !== 16 || nik.length !== 16) {
+        alert("Nomor KK dan NIK harus 16 digit.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+  <script>
+    // Simpan posisi scroll saat keluar halaman
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('scrollPos', window.scrollY);
+    });
+
+    // Saat load, scroll ke posisi sebelumnya
+    window.addEventListener('load', () => {
+      const scrollPos = localStorage.getItem('scrollPos');
+      if (scrollPos) {
+        window.scrollTo(0, parseInt(scrollPos));
+      }
+    });
+  </script>
+
 </body>
 
 </html>

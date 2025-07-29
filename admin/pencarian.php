@@ -4,8 +4,44 @@ session_start();
 
 // Check if user is not logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
+    header('Location: ../login');
     exit();
+}
+
+// Inisialisasi variabel hasil
+$hasil = null;
+$pesan = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Jika tombol Reset ditekan
+    if (isset($_POST['reset'])) {
+        // Kosongkan hasil pencarian dan pesan
+        $hasil = null;
+        $pesan = '';
+        $_POST['kk'] = '';
+        $_POST['nik'] = '';
+    } else {
+        $kk = $_POST['kk'] ?? '';
+        $nik = $_POST['nik'] ?? '';
+
+        if (strlen($kk) !== 16 || strlen($nik) !== 16) {
+            $pesan = "Nomor KK dan NIK harus 16 digit.";
+        } else {
+            $query = "SELECT nomor_kartu_keluarga, nomor_induk_kependudukan, desil_nasional 
+                      FROM dtsen 
+                      WHERE nomor_kartu_keluarga = ? AND nomor_induk_kependudukan = ? 
+                      LIMIT 1";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ss", $kk, $nik);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $hasil = $result->fetch_assoc();
+
+            if (!$hasil) {
+                $pesan = "Data Tidak Ditemukan";
+            }
+        }
+    }
 }
 
 ?>
@@ -83,29 +119,62 @@ if (!isset($_SESSION['user_id'])) {
                 <!-- Content -->
                 <div class="bg-white shadow-md rounded-lg p-6 mb-5">
                     <h2 class="text-2xl font-semibold mb-4">Halaman Pencarian</h2>
-                    <!-- <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p> -->
                 </div>
 
-                <!-- Tableau -->
+                <!-- Pencarian -->
                 <div class="bg-white shadow-md rounded-lg p-6">
-                    <form action="#" method="post">
+                    <form action="" method="post">
                         <div>
-                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor KK</label>
-                            <input type="number" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor KK</label>
+                            <input type="number" name="kk"
+                                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['kk'] ?? '') ?>"
+                                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
+                                required>
                         </div>
-                        <div>
-                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
-                            <input type="number" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500"> <br>
+                        <br>
+                        <div class="mt-4">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
+                            <input type="number" name="nik"
+                                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
+                                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
+                                required>
                         </div>
-                        <!-- <button type="submit" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:to-cyan-500 hover:from-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Submit</button> -->
                         <div class="mt-6">
-                            <button type="submit" class="gradient-btn text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:to-cyan-500 hover:from-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition ease-out">Submit</button>
+                            <button type="submit" class="gradient-btn text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-400 hover:to-cyan-400 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cari</button>
+                            <button type="submit" name="reset" value="1" class="gradient-btn text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-blue-400 hover:to-cyan-400 focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Reset
+                            </button>
                         </div>
                     </form>
+
+                    <?php if ($hasil): ?>
+                        <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
+                            <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
+                            <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
+                            <p><strong>Desil Nasional:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
+                        </div>
+                    <?php elseif ($pesan): ?>
+                        <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">
+                            <?= $pesan ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </main>
     </div>
+
+    <script>
+        function validasiForm() {
+            const kk = document.getElementById("kk").value;
+            const nik = document.getElementById("nik").value;
+
+            if (kk.length !== 16 || nik.length !== 16) {
+                alert("Nomor KK dan NIK harus 16 digit.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

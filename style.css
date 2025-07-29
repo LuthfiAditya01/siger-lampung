@@ -143,7 +143,7 @@ body {
 /* Hero Section */
 .hero-section {
     padding: 2rem 1rem;
-    background: 
+    background:
         linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-light) 100%);
     background-size: cover;
     min-height: 100vh;
@@ -299,7 +299,8 @@ body {
 .about-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;      /* ini yang bikin tetap center meski jumlah ganjil */
+    justify-content: center;
+    /* ini yang bikin tetap center meski jumlah ganjil */
     gap: 2rem;
     margin-bottom: 3rem;
     position: relative;
@@ -314,10 +315,13 @@ body {
     border-radius: 1.5rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease; 
-    flex: 1 1 300px;              /* grow, shrink, basis */
-    max-width: 400px;             /* agar tidak terlalu besar di layar lebar */
-    min-width: 250px;             /* agar tetap bagus di HP */
+    transition: transform 0.3s ease;
+    flex: 1 1 300px;
+    /* grow, shrink, basis */
+    max-width: 400px;
+    /* agar tidak terlalu besar di layar lebar */
+    min-width: 250px;
+    /* agar tetap bagus di HP */
     box-sizing: border-box;
 }
 
@@ -331,10 +335,13 @@ body {
     border-radius: 1.5rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease; 
-    flex: 1 1 300px;              /* grow, shrink, basis */
-    max-width: 800px;             /* agar tidak terlalu besar di layar lebar */
-    min-width: 250px;             /* agar tetap bagus di HP */
+    transition: transform 0.3s ease;
+    flex: 1 1 300px;
+    /* grow, shrink, basis */
+    max-width: 800px;
+    /* agar tidak terlalu besar di layar lebar */
+    min-width: 250px;
+    /* agar tetap bagus di HP */
     box-sizing: border-box;
 }
 
@@ -400,7 +407,8 @@ body {
 .logo-container img {
     max-width: 100%;
     height: auto;
-    width: 120px; /* Ukuran logo yang lebih kecil */
+    width: 120px;
+    /* Ukuran logo yang lebih kecil */
     object-fit: contain;
 }
 
@@ -423,7 +431,7 @@ body {
 .dashboard-section {
     padding: 2rem 0;
     /* background-color: var(--); */
-        background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
+    background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-teal) 100%);
     height: 100vh;
     max-height: 100vh;
     display: flex;
@@ -458,27 +466,27 @@ body {
 }
 
 .dashboard-tableau {
-  width: 95%;
-  max-width: 1400px;
-  margin: 4rem auto 40px auto;
-  background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 60px;
-  /* height: calc(100vh - 300px); */
-  height: 700px;
+    width: 95%;
+    max-width: 1400px;
+    margin: 4rem auto 40px auto;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 60px;
+    /* height: calc(100vh - 300px); */
+    height: 700px;
 }
 
 .dashboard-tableau .tableauPlaceholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .select-container {
@@ -905,32 +913,33 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+
     .hero-grid,
     .about-grid,
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .map-container {
         height: 350px;
         order: 2;
     }
-    
+
     .contact-info {
         order: 1;
     }
-    
+
     .dashboard-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-    
+
     .dashboard-header .section-title {
         text-align: center;
     }
-    
+
     .dashboard-tableau {
         width: 96%;
         margin: 0 auto;
@@ -938,11 +947,11 @@ body {
         height: calc(100vh - 250px);
         overflow: hidden;
     }
-    
+
     .tabulasi-controls {
         grid-template-columns: 1fr;
     }
-    
+
     .hero-logo img {
         width: 250px;
     }
@@ -952,11 +961,11 @@ body {
     .mobile-menu-btn {
         display: block;
     }
-    
+
     .nav-menu {
         display: none;
     }
-    
+
     .mobile-menu-btn button {
         background: none;
         border: none;
@@ -964,43 +973,43 @@ body {
         font-size: 1.5rem;
         cursor: pointer;
     }
-    
+
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .section-title {
         font-size: 2.5rem;
     }
-    
+
     .hero-description {
         font-size: 1.1rem;
     }
-    
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .map-container {
         height: 300px;
     }
-    
+
     .contact-item {
         padding: 1.25rem;
     }
-    
+
     /* Form sudah vertikal secara default */
-    
+
     .partner-logos {
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
     }
-    
+
     .container {
         padding: 0 1rem;
     }
-    
+
     .hero-logo img {
         width: 200px;
     }
@@ -1010,28 +1019,28 @@ body {
     .hero-title {
         font-size: 2rem;
     }
-    
+
     .section-title {
         font-size: 2rem;
     }
-    
+
     .hero-description {
         font-size: 1rem;
     }
-    
+
     .pengaduan-form {
         padding: 1.5rem;
         gap: 0.5rem;
     }
-    
+
     .card-content {
         padding: 1.5rem;
     }
-    
+
     .hero-section {
         padding: 1rem;
     }
-    
+
     .hero-section,
     .about-section,
     .dashboard-section,
@@ -1040,17 +1049,17 @@ body {
         padding: 1.5rem 0;
         min-height: 100vh;
     }
-    
+
     .pengaduan-section {
         padding: 3rem 1rem;
         min-height: 100vh;
     }
-    
+
     .dashboard-section .container,
     .tabulasi-section .container {
         padding: 0 1rem;
     }
-    
+
     .dashboard-tableau {
         width: 98%;
         border-radius: 1rem;
@@ -1059,32 +1068,32 @@ body {
         height: calc(100vh - 200px);
         overflow: hidden;
     }
-    
+
     .map-container {
         height: 250px;
         border-radius: 1rem;
     }
-    
+
     .contact-info {
         gap: 1rem;
     }
-    
+
     .contact-item {
         padding: 1rem;
         flex-direction: row;
         align-items: center;
     }
-    
+
     .contact-icon {
         width: 40px;
         height: 40px;
         font-size: 1rem;
     }
-    
+
     .contact-details p {
         font-size: 0.95rem;
     }
-    
+
     .hero-logo img {
         width: 150px;
     }
@@ -1108,6 +1117,7 @@ body {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1134,4 +1144,38 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-blue-dark);
+}
+
+
+.custom-btn-f {
+    background-color: white;
+    color: #0093dd;
+    border: 2px solid #0093dd;
+    font-weight: 500;
+    font-size: 0.875rem;
+    /* text-sm */
+    padding: 0.625rem 1.25rem;
+    /* py-2.5 px-5 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    text-align: center;
+    margin-right: 0.5rem;
+    /* me-2 */
+    margin-bottom: 0.5rem;
+    /* mb-2 */
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+.custom-btn-f:hover {
+    background-color: #66c8f1;
+    /* biru muda saat hover */
+    color: white;
+    border-color: #66c8f1;
+}
+
+.custom-btn-f:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 147, 221, 0.3);
+    /* focus ring */
 }

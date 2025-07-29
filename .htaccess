@@ -1,0 +1,22 @@
+DirectoryIndex index.php
+Options -Indexes
+
+RewriteEngine On
+
+# ==== ROUTING UMUM ====
+
+RewriteRule ^beranda$ index.php [L]
+RewriteRule ^login$ login.php [L]
+RewriteRule ^index2$ index2.html [L]
+RewriteRule ^index3$ index3.html [L]
+
+# ==== ROUTING ADMIN ====
+RewriteRule ^admin/beranda$ admin/index.php [L]
+RewriteRule ^admin/data$ admin/data.php [L]
+RewriteRule ^admin/pencarian$ admin/pencarian.php [L]
+
+# ==== DEFAULT 404 JIKA TIDAK COCOK ====
+ErrorDocument 404 /index.php
+
+# Jika file atau folder tidak ditemukan, arahkan ke index
+ErrorDocument 404 /index.php
