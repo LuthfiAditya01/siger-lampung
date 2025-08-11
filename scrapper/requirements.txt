@@ -1,0 +1,5 @@
+httpx
+pandas
+streamlit
+selectolax
+mysql-connector-python

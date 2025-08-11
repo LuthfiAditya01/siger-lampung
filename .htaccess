@@ -14,6 +14,8 @@ RewriteRule ^index3$ index3.html [L]
 RewriteRule ^admin/beranda$ admin/index.php [L]
 RewriteRule ^admin/data$ admin/data.php [L]
 RewriteRule ^admin/pencarian$ admin/pencarian.php [L]
+RewriteRule ^admin/pencarian-new$ admin/pencarian-new.php [L]
+RewriteRule ^admin/get_wilayah$ admin/get_wilayah.php [L]
 
 # ==== DEFAULT 404 JIKA TIDAK COCOK ====
 ErrorDocument 404 /index.php

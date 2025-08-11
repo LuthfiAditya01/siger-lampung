@@ -44,10 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <div class="min-h-screen min-w-max flex items-center justify-center bg-blue-300">
+  <div class="min-h-screen min-w-max flex items-center justify-center" style="background-color:#eb891b">
     <div class="bg-white p-8 rounded-lg shadow-lg w-96">
       <div class="flex justify-center mb-6">
-        <img src="img/logo.png" class="w-32 h-auto" alt="Logo Siger Lampung">
+        <img src="img/logo.jpg" class="w-32 h-auto" alt="Logo Siger Lampung">
       </div>
       <?php if (isset($error)): ?>
         <div class="mb-4 p-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">

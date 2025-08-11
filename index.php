@@ -37,6 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 
+$query = "SELECT * FROM news ORDER BY tanggal_berita DESC LIMIT 10";
+$result = mysqli_query($conn, $query);
+$berita = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+  $berita[] = $row;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -50,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
   <!-- Add Heroicons via CDN -->
   <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
 
@@ -58,6 +67,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <style>
     html {
       scroll-behavior: smooth;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
@@ -75,6 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button class="nav-link" onclick="scrollToSection('hero')">
           Beranda
         </button>
+        <!-- <button class="nav-link" onclick="scrollToSection('berita')">
+          Berita
+        </button> -->
         <button class="nav-link" onclick="scrollToSection('about')">
           Tentang
         </button>
@@ -82,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           Dashboard
         </button>
         <button class="nav-link" onclick="scrollToSection('tabulasi')">
-          Pencarian
+          TanyaDTSEN
         </button>
         <button class="nav-link" onclick="scrollToSection('pengaduan')">
           Pengaduan
@@ -105,42 +126,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <button class="mobile-nav-link" onclick="scrollToSection('hero')">
         Beranda
       </button>
+      <!-- <button class="mobile-nav-link" onclick="scrollToSection('berita')">
+        Berita
+      </button> -->
       <button class="mobile-nav-link" onclick="scrollToSection('about')">
-        DTSEN
+        Tentang
       </button>
       <button class="mobile-nav-link" onclick="scrollToSection('dashboard')">
         Dashboard
       </button>
-      <button class="mobile-nav-link" onclick="scrollToSection('data')">
-        Data
+      <button class="mobile-nav-link" onclick="scrollToSection('tabulasi')">
+        TanyaDTSEN
       </button>
       <button class="mobile-nav-link" onclick="scrollToSection('pengaduan')">
         Pengaduan
+      </button>
+      <button class="mobile-nav-link" onclick="scrollToSection('contact')">
+        Kontak
       </button>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section id="hero" class="hero-section">
-    <div class="container">
+    <div class="container" style="margin-top:2rem">
+      <br>
       <div class="hero-grid">
-        <div class="hero-content">
-          <h1 class="hero-title">Selamat Datang</h1>
-          <p class="hero-description">SIGER LAMPUNG (Sinergi Gerak Bersama Untuk Layanan Akurat Menuju Performas Unggu)
-            adalah platform terintegrasi yang menyediakan data dan informasi statistik terkini untuk mendukung
-            pengambilan keputusan yang akurat dan berbasis data di Provinsi Lampung.</p>
+        <div class="hero-content" style="padding-left:50px;">
+          <h1 class="hero-title">Tabik Pun!</h1>
+          <p class="hero-description">SIGER BANDAR LAMPUNG (Sinergi Gerak Bersama Bandar Lampung)
+            adalah platform terintegrasi yang menyediakan data dan informasi megenai DTSEN untuk mendukung
+            pengambilan keputusan yang akurat dan berbasis data di Kota Bandar Lampung Lampung.</p>
         </div>
         <div class="hero-image">
           <div class="hero-image-container">
             <div class="hero-logo">
-              <img src="img/logo.png" alt="" />
+              <img src="img/logo.jpg" alt="" />
             </div>
           </div>
         </div>
       </div>
+      <br>
+      <div class="overflow-x-auto scrollbar-hide">
+        <div class="flex space-x-4 px-4 transition-all duration-300 ease-in-out">
+          <?php foreach ($berita as $item): ?>
+            <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank"
+              class="min-w-[250px] max-w-[250px] bg-white shadow-md rounded-lg p-4 hover:scale-105 transition-transform duration-300">
+              <div class="text-sm text-gray-500 mb-2"><?= date("d M Y", strtotime($item['tanggal_berita'])) ?></div>
+              <h3 class="text-lg font-semibold text-gray-800">
+                <?= htmlspecialchars($item['nama']) ?>
+              </h3>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
     </div>
   </section>
+  <!-- Berita Section -->
+  <!-- <section id="berita" class="berita-section">
+    <div class="container">
+      <h2 class="section-title">BERITA</h2>
+      <div class="w-full bg-gray-100 py-8">
+        <h2 class="text-2xl font-bold text-center mb-6">Berita Terbaru</h2>
 
+        <div class="overflow-x-auto scrollbar-hide">
+          <div class="flex space-x-4 px-4 transition-all duration-300 ease-in-out">
+            <?php foreach ($berita as $item): ?>
+              <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank"
+                class="min-w-[250px] max-w-[250px] bg-white shadow-md rounded-lg p-4 hover:scale-105 transition-transform duration-300">
+                <div class="text-sm text-gray-500 mb-2"><?= date("d M Y", strtotime($item['tanggal_berita'])) ?></div>
+                <h3 class="text-lg font-semibold text-gray-800">
+                  <?= htmlspecialchars($item['nama']) ?>
+                </h3>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section> -->
   <!-- About Section -->
   <section id="about" class="about-section">
     <div class="container">
@@ -177,12 +242,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
 
       <div class="partner-logos">
+
         <div class="logo-container">
-          <img src="img/logo-kemensos.png" alt="" />
+          <img src="img/logo-kotabalam.PNG" alt="" />
         </div>
         <div class="logo-container">
           <img src="img/logo-bps.png" alt="" />
         </div>
+        <div class="logo-container">
+          <img src="img/logo-kemensos.png" alt="" />
+        </div>
+
         <div class="logo-container">
           <img src="img/logo_tnp2k.png" alt="" />
         </div>
@@ -190,108 +260,130 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </section>
 
+
+
   <!-- Dashboard Section -->
   <section id="dashboard" class="dashboard-section">
     <div class="container">
 
       <!-- Dashboard Tableau - Full Width -->
       <div class="dashboard-tableau">
-        <div class='tableauPlaceholder' id='viz1753325516855' style='width: 100%; height: 100%; position: relative;'>
-          <noscript>
-            <a href='#'>
-              <img alt=' '
-                src='https://public.tableau.com/static/images/Da/DashboardSIGERLAMPUNG-BPS1871/Wilayah_1/1_rss.png'
-                style='border: none' />
-            </a>
-          </noscript>
-          <object class='tableauViz' style='width: 100%; height: 100%;'>
+        <div class='tableauPlaceholder' id='viz1754147765448' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard3&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'>
             <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
             <param name='embed_code_version' value='3' />
             <param name='site_root' value='' />
-            <param name='name' value='DashboardSIGERLAMPUNG-BPS1871&#47;Wilayah_1' />
+            <param name='name' value='DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard3' />
             <param name='tabs' value='yes' />
             <param name='toolbar' value='yes' />
-            <param name='static_image'
-              value='https://public.tableau.com/static/images/Da/DashboardSIGERLAMPUNG-BPS1871/Wilayah_1/1.png' />
+            <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Da&#47;DashboardSIGERLAMPUNG-BPS1871&#47;Dashboard3&#47;1.png' />
             <param name='animate_transition' value='yes' />
             <param name='display_static_image' value='yes' />
             <param name='display_spinner' value='yes' />
             <param name='display_overlay' value='yes' />
             <param name='display_count' value='yes' />
             <param name='language' value='en-US' />
-          </object>
-        </div>
+          </object></div>
+        <script type='text/javascript'>
+          var divElement = document.getElementById('viz1754147765448');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          if (divElement.offsetWidth > 800) {
+            vizElement.style.minWidth = '1024px';
+            vizElement.style.maxWidth = '1400px';
+            vizElement.style.width = '100%';
+            vizElement.style.minHeight = '650px';
+            vizElement.style.maxHeight = '950px';
+            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          } else if (divElement.offsetWidth > 500) {
+            vizElement.style.minWidth = '1024px';
+            vizElement.style.maxWidth = '1400px';
+            vizElement.style.width = '100%';
+            vizElement.style.minHeight = '650px';
+            vizElement.style.maxHeight = '950px';
+            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          } else {
+            vizElement.style.width = '100%';
+            vizElement.style.height = '1350px';
+          }
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        </script>
       </div>
-
-      <script type='text/javascript'>
-        var divElement = document.getElementById('viz1753325516855');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        vizElement.style.width = '100%';
-        vizElement.style.height = '100%';
-        var scriptElement = document.createElement('script');
-        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-        vizElement.parentNode.insertBefore(scriptElement, vizElement);
-      </script>
 
     </div>
   </section>
 
-  <!-- Pencarian Section -->
+  <!-- tanya DTSEN Section -->
   <section id="tabulasi" class="tabulasi-section">
     <div class="container">
       <h2 class="section-title" style="color: #006a9f">
-        PENCARIAN
+        TANYA DTSEN
       </h2>
 
       <div class="tabulasi-card">
-        <div class="dashboard-tableau" style="max-height:500px; background-color: #0093dd;">
-          <!-- Pencarian -->
-          <div style="width:100%;">
-            <form action="" method="post" style="width:100%;">
-              <div>
-                <label class="block mb-2 text-sm text-white font-medium text-gray-900">Masukkan Nomor KK</label>
-                <input type="number" name="kk"
-                  value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['kk'] ?? '') ?>"
-                  class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
-                  required>
-              </div>
-              <br>
-              <div class="mt-4">
-                <label class="block mb-2 text-sm text-white font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
-                <input type="number" name="nik"
-                  value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
-                  class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
-                  required>
-              </div>
+        <!-- <div class="dashboard-pencarian">
+          <form action="" method="post">
+            <div>
+              <label class="block mb-2 text-sm text-white font-medium">Masukkan Nomor KK</label>
+              <input type="number" name="kk"
+                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['kk'] ?? '') ?>"
+                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm"
+                required>
+            </div>
 
-              <div class="mt-6">
-                <button type="submit" class="custom-btn-f">Cari</button>
-                <button type="submit" name="reset" value="1"
-                  class="custom-btn-f bg-gray-200 text-gray-700 hover:bg-gray-300">
-                  Reset
-                </button>
+            <div>
+              <label class="block mb-2 text-sm text-white font-medium">Masukkan NIK</label>
+              <input type="number" name="nik"
+                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
+                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm"
+                required>
+            </div>
+
+            <div class="button-group">
+              <button type="submit" class="custom-btn-f">Cari</button>
+              <button type="submit" name="reset" value="1" class="custom-btn-f bg-gray-200 hover:bg-gray-300">
+                Reset
+              </button>
+            </div>
+          </form>
+
+          <?php if ($hasil): ?>
+            <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
+              <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
+              <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
+              <p><strong>Desil:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
+            </div>
+          <?php elseif ($pesan): ?>
+            <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">
+              <?= $pesan ?>
+            </div>
+          <?php endif; ?>
+        </div> -->
+        <div class="max-w-4xl mx-auto px-4">
+
+          <!-- Container Chat -->
+          <div class="bg-white rounded-xl shadow-md p-6 h-[500px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
+
+            <!-- Chat Display -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4">
+              <!-- Contoh pesan masuk -->
+              <div class="flex items-start gap-2">
+                <div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%]">
+                  Halo! Ada yang bisa saya bantu?
+                </div>
               </div>
+            </div>
+
+            <!-- Input chat -->
+            <form id="chat-form" class="flex gap-2" onsubmit="kirimPesan(event)">
+              <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pesan...">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
             </form>
 
-            <?php if ($hasil): ?>
-              <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
-                <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
-                <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
-                <p><strong>Desil Nasional:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
-              </div>
-            <?php elseif ($pesan): ?>
-              <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">
-                <?= $pesan ?>
-              </div>
-            <?php endif; ?>
           </div>
-
-
-          <!-- </div> -->
         </div>
-
       </div>
-      <!-- </div> -->
+
   </section>
 
   <!-- Pengaduan Section -->
@@ -441,40 +533,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
 
-    function showTabulation() {
-      const tabulationType = document.getElementById("tabulation-select").value;
-      const region = document.getElementById("tabulation-region").value;
-
-      if (tabulationType && region) {
-        alert(`Menampilkan tabulasi: ${tabulationType} untuk wilayah: ${region}`);
-      } else {
-        alert("Silakan pilih jenis tabulasi dan wilayah terlebih dahulu");
-      }
-    }
-
-    function resetTabulation() {
-      document.getElementById("tabulation-select").value = "";
-      document.getElementById("tabulation-region").value = "";
-    }
-
-    function submitPengaduan(event) {
-      event.preventDefault();
-      const nama = document.getElementById("nama").value;
-      const pengaduan = document.getElementById("pengaduan").value;
-
-      if (!nama || !pengaduan) {
-        alert("Mohon isi nama dan isi pengaduan");
-        return;
-      }
-
-      alert("Pengaduan berhasil dikirim! Terima kasih atas masukan Anda.");
-
-      // Reset form
-      document.getElementById("nama").value = "";
-      document.getElementById("alamat").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("pengaduan").value = "";
-    }
 
     // Add scroll effect to navbar
     window.addEventListener("scroll", function() {
@@ -541,6 +599,132 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     });
   </script>
+  <!-- <script>
+    async function kirimPesan(e) {
+      e.preventDefault();
+
+      const input = document.getElementById("user-input");
+      const pesan = input.value.trim();
+      if (pesan === "") return;
+
+      const chatBox = document.getElementById("chat-messages");
+
+      // Tambah pesan user
+      const userMessage = document.createElement("div");
+      userMessage.className = "flex items-start justify-end gap-2";
+      userMessage.innerHTML = `<div class="bg-blue-500 text-white px-4 py-2 rounded-lg max-w-[80%]">${pesan}</div>`;
+      chatBox.appendChild(userMessage);
+      input.value = "";
+      input.focus();
+
+      // Loading
+      const loading = document.createElement("div");
+      loading.className = "flex items-start gap-2";
+      loading.innerHTML = `<div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%] italic text-gray-500">Mengetik...</div>`;
+      chatBox.appendChild(loading);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Kirim ke backend Python
+      try {
+        const res = await fetch("http://localhost:8000/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              question: yourInput
+            }),
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const answer = data.answer; // Pastikan ini yang digunakan
+            // tampilkan answer ke UI
+          });
+
+        const data = await res.json();
+
+        // Hapus loading
+        chatBox.removeChild(loading);
+
+        // Tambah balasan bot
+        const botReply = document.createElement("div");
+        botReply.className = "flex items-start gap-2";
+        botReply.innerHTML = `<div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%]">${data.response}</div>`;
+        chatBox.appendChild(botReply);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+      } catch (error) {
+        console.error("Gagal kirim:", error);
+      }
+    }
+  </script> -->
+  <script>
+    function kirimPesan(event) {
+      event.preventDefault(); // Cegah reload
+
+      const input = document.getElementById("user-input");
+      const pesan = input.value.trim();
+
+      if (!pesan) return;
+
+      // Tambahkan pesan user ke tampilan chat
+      const chatMessages = document.getElementById("chat-messages");
+      const userMessage = document.createElement("div");
+      userMessage.textContent = "🧑: " + pesan;
+      chatMessages.appendChild(userMessage);
+
+      // Kosongkan input
+      input.value = "";
+
+      // Kirim ke backend
+      fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: pesan
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          const botMessage = document.createElement("div");
+          botMessage.textContent = "🤖: " + data.answer;
+          chatMessages.appendChild(botMessage);
+        })
+        .catch(error => {
+          const errorMessage = document.createElement("div");
+          errorMessage.textContent = "❌ Gagal kirim: " + error;
+          chatMessages.appendChild(errorMessage);
+        });
+    }
+  </script>
+  <!-- carousel js -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const container = document.querySelector(".overflow-x-auto");
+      let scrollAmount = 0;
+      let step = 1; // pixel geser per interval
+      let maxScroll = container.scrollWidth - container.clientWidth;
+
+      function autoScroll() {
+        scrollAmount += step;
+
+        // kalau sudah mentok kanan/balik ke awal
+        if (scrollAmount >= maxScroll) {
+          scrollAmount = 0;
+        }
+
+        container.scrollLeft = scrollAmount; // langsung geser tanpa smooth
+      }
+
+      setInterval(autoScroll, 10); // geser tiap 10ms (halus)
+    });
+  </script>
+
+
+
 
 </body>
 

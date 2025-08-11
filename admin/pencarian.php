@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Pencarian - Siger Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
-    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
     <style>
@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <br>
                         <div class="mt-4">
-                            <label class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK Kepala Keluarga</label>
+                            <label class="block mb-2 text-sm font-medium text-gray-900">Masukkan Nomor NIK</label>
                             <input type="number" name="nik"
                                 value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
                                 class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-blue-500 focus:border-blue-500"
@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
                             <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
                             <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
-                            <p><strong>Desil Nasional:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
+                            <p><strong>Desil:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
                         </div>
                     <?php elseif ($pesan): ?>
                         <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">

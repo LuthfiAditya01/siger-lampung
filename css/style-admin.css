@@ -1,0 +1,40 @@
+
+/* Transisi halus untuk mainContent */
+#mainContent {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Atur tinggi svg biar konsisten */
+svg.feather {
+  vertical-align: middle;
+}
+
+
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Optional hover effect like Tailwind */
+.hover-effect:hover {
+  background-color: #e9f2ff;
+  text-decoration: none;
+}
+
+/* Hide sidebar */
+.sidebar-collapsed #sidebar {
+  width: 0 !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+/* Sidebar hidden state */
+.sidebar-collapsed {
+  width: 0 !important;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Untuk menyembunyikan konten dalam aside */
+.sidebar-collapsed aside {
+  display: none;
+}

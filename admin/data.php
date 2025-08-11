@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$query = "SELECT * FROM dtsen2";
+$query = "SELECT * FROM dtsen";
 $result = $conn->query($query);
 
 ?>
@@ -20,7 +20,7 @@ $result = $conn->query($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Pencarian - Siger Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
-    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
 
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
