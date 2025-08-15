@@ -78,6 +78,167 @@ while ($row = mysqli_fetch_assoc($result)) {
       scrollbar-width: none;
     }
   </style>
+  <!-- stylechatbot -->
+  <style>
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background-color: #d1e7ff;
+      /* biru muda */
+      color: #000;
+      border-bottom-right-radius: 5px;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background-color: #e9ecef;
+      /* abu-abu terang */
+      color: #000;
+      border-bottom-left-radius: 5px;
+    }
+
+    .input-container {
+      display: flex;
+      border-top: 1px solid #ccc;
+      background: #fff;
+      padding: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 8px 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    /* Efek loading */
+    .loading {
+      display: inline-block;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .loading::after {
+      content: '';
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+
+      0%,
+      20% {
+        content: '.';
+      }
+
+      40% {
+        content: '..';
+      }
+
+      60% {
+        content: '...';
+      }
+
+      80%,
+      100% {
+        content: '';
+      }
+    }
+
+    .dot-typing {
+      display: inline-block;
+      position: relative;
+      width: 20px;
+      height: 8px;
+    }
+
+    .dot-typing::before,
+    .dot-typing::after,
+    .dot-typing div {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #555;
+      animation: dotTyping 1s infinite ease-in-out;
+    }
+
+    .dot-typing div {
+      left: 7px;
+      animation-delay: 0.2s;
+    }
+
+    .dot-typing::after {
+      left: 14px;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes dotTyping {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.6);
+      }
+
+      40% {
+        transform: scale(1);
+      }
+    }
+  </style>
+  <!-- style berita -->
+  <style>
+    /* Animasi scroll horizontal */
+    @keyframes scrollBerita {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .scroll-track {
+      animation: scrollBerita 25s linear infinite;
+    }
+
+    .scroll-container:hover .scroll-track {
+      animation-play-state: paused;
+    }
+  </style>
 </head>
 
 <body>
@@ -167,45 +328,42 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
       </div>
       <br>
-      <div class="overflow-x-auto scrollbar-hide">
-        <div class="flex space-x-4 px-4 transition-all duration-300 ease-in-out">
+      <div class="overflow-x-hidden scroll-container">
+        <div class="flex space-x-4 px-4 scroll-track">
           <?php foreach ($berita as $item): ?>
             <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank"
               class="min-w-[250px] max-w-[250px] bg-white shadow-md rounded-lg p-4 hover:scale-105 transition-transform duration-300">
-              <div class="text-sm text-gray-500 mb-2"><?= date("d M Y", strtotime($item['tanggal_berita'])) ?></div>
-              <h3 class="text-lg font-semibold text-gray-800">
+              <div class="text-sm text-gray-500 mb-2">
+                <?= date("d M Y", strtotime($item['tanggal_berita'])) ?>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-800 mb-1">
                 <?= htmlspecialchars($item['nama']) ?>
               </h3>
+              <div class="text-sm text-gray-600 italic">
+                Sumber: <?= htmlspecialchars($item['sumber']) ?>
+              </div>
+            </a>
+          <?php endforeach; ?>
+
+          <!-- Duplikat biar scrolling mulus -->
+          <?php foreach ($berita as $item): ?>
+            <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank"
+              class="min-w-[250px] max-w-[250px] bg-white shadow-md rounded-lg p-4 hover:scale-105 transition-transform duration-300">
+              <div class="text-sm text-gray-500 mb-2">
+                <?= date("d M Y", strtotime($item['tanggal_berita'])) ?>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                <?= htmlspecialchars($item['nama']) ?>
+              </h3>
+              <div class="text-sm text-gray-600 italic">
+                Sumber: <?= htmlspecialchars($item['sumber']) ?>
+              </div>
             </a>
           <?php endforeach; ?>
         </div>
       </div>
     </div>
   </section>
-  <!-- Berita Section -->
-  <!-- <section id="berita" class="berita-section">
-    <div class="container">
-      <h2 class="section-title">BERITA</h2>
-      <div class="w-full bg-gray-100 py-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Berita Terbaru</h2>
-
-        <div class="overflow-x-auto scrollbar-hide">
-          <div class="flex space-x-4 px-4 transition-all duration-300 ease-in-out">
-            <?php foreach ($berita as $item): ?>
-              <a href="<?= htmlspecialchars($item['link']) ?>" target="_blank"
-                class="min-w-[250px] max-w-[250px] bg-white shadow-md rounded-lg p-4 hover:scale-105 transition-transform duration-300">
-                <div class="text-sm text-gray-500 mb-2"><?= date("d M Y", strtotime($item['tanggal_berita'])) ?></div>
-                <h3 class="text-lg font-semibold text-gray-800">
-                  <?= htmlspecialchars($item['nama']) ?>
-                </h3>
-              </a>
-            <?php endforeach; ?>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section> -->
   <!-- About Section -->
   <section id="about" class="about-section">
     <div class="container">
@@ -359,27 +517,34 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
           <?php endif; ?>
         </div> -->
-        <div class="max-w-4xl mx-auto px-4">
-
-          <!-- Container Chat -->
+        <!-- <div class="max-w-4xl mx-auto px-4">
           <div class="bg-white rounded-xl shadow-md p-6 h-[500px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
-
-            <!-- Chat Display -->
-            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4">
-              <!-- Contoh pesan masuk -->
-              <div class="flex items-start gap-2">
+            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 flex flex-col">
+              <div class="flex items-start">
                 <div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%]">
                   Halo! Ada yang bisa saya bantu?
                 </div>
               </div>
             </div>
-
-            <!-- Input chat -->
             <form id="chat-form" class="flex gap-2" onsubmit="kirimPesan(event)">
               <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pesan...">
               <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
             </form>
-
+          </div>
+        </div> -->
+        <div class="max-w-8xl mx-auto px-4">
+          <div class="bg-white rounded-xl shadow-md p-6 h-[400px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
+            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 flex flex-col">
+              <div class="flex items-start">
+                <div class="bg-gray-200 px-4 py-2 rounded-sm shadow max-w-[80%]">
+                  Halo! Ada yang bisa saya bantu?
+                </div>
+              </div>
+            </div>
+            <form id="chat-form" class="flex gap-2" onsubmit="kirimPesan(event)">
+              <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pesan...">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
+            </form>
           </div>
         </div>
       </div>
@@ -599,85 +764,38 @@ while ($row = mysqli_fetch_assoc($result)) {
       }
     });
   </script>
-  <!-- <script>
-    async function kirimPesan(e) {
-      e.preventDefault();
-
-      const input = document.getElementById("user-input");
-      const pesan = input.value.trim();
-      if (pesan === "") return;
-
-      const chatBox = document.getElementById("chat-messages");
-
-      // Tambah pesan user
-      const userMessage = document.createElement("div");
-      userMessage.className = "flex items-start justify-end gap-2";
-      userMessage.innerHTML = `<div class="bg-blue-500 text-white px-4 py-2 rounded-lg max-w-[80%]">${pesan}</div>`;
-      chatBox.appendChild(userMessage);
-      input.value = "";
-      input.focus();
-
-      // Loading
-      const loading = document.createElement("div");
-      loading.className = "flex items-start gap-2";
-      loading.innerHTML = `<div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%] italic text-gray-500">Mengetik...</div>`;
-      chatBox.appendChild(loading);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      // Kirim ke backend Python
-      try {
-        const res = await fetch("http://localhost:8000/chat", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              question: yourInput
-            }),
-          })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            const answer = data.answer; // Pastikan ini yang digunakan
-            // tampilkan answer ke UI
-          });
-
-        const data = await res.json();
-
-        // Hapus loading
-        chatBox.removeChild(loading);
-
-        // Tambah balasan bot
-        const botReply = document.createElement("div");
-        botReply.className = "flex items-start gap-2";
-        botReply.innerHTML = `<div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%]">${data.response}</div>`;
-        chatBox.appendChild(botReply);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-      } catch (error) {
-        console.error("Gagal kirim:", error);
-      }
-    }
-  </script> -->
   <script>
     function kirimPesan(event) {
-      event.preventDefault(); // Cegah reload
+      event.preventDefault();
 
       const input = document.getElementById("user-input");
       const pesan = input.value.trim();
-
       if (!pesan) return;
 
-      // Tambahkan pesan user ke tampilan chat
       const chatMessages = document.getElementById("chat-messages");
-      const userMessage = document.createElement("div");
-      userMessage.textContent = "🧑: " + pesan;
-      chatMessages.appendChild(userMessage);
 
-      // Kosongkan input
+      // Pesan user di kanan
+      const userWrapper = document.createElement("div");
+      userWrapper.className = "flex justify-end";
+      const userMessage = document.createElement("div");
+      userMessage.className = "bg-blue-100 px-4 py-2 rounded-sm shadow max-w-[80%]";
+      userMessage.textContent = pesan;
+      userWrapper.appendChild(userMessage);
+      chatMessages.appendChild(userWrapper);
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
       input.value = "";
 
-      // Kirim ke backend
+      // Loading bubble bot di kiri
+      const botWrapper = document.createElement("div");
+      botWrapper.className = "flex justify-start";
+      const typingMessage = document.createElement("div");
+      typingMessage.className = "bg-gray-100 px-4 py-2 rounded-sm shadow max-w-[80%] flex items-center gap-2";
+      typingMessage.innerHTML = `<span class="dot-typing"></span>`;
+      botWrapper.appendChild(typingMessage);
+      chatMessages.appendChild(botWrapper);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
       fetch("http://localhost:8000/chat", {
           method: "POST",
           headers: {
@@ -689,14 +807,22 @@ while ($row = mysqli_fetch_assoc($result)) {
         })
         .then(response => response.json())
         .then(data => {
+          botWrapper.remove();
+          const botMessageWrapper = document.createElement("div");
+          botMessageWrapper.className = "flex justify-start";
           const botMessage = document.createElement("div");
-          botMessage.textContent = "🤖: " + data.answer;
-          chatMessages.appendChild(botMessage);
+          botMessage.className = "bg-gray-200 px-4 py-2 rounded-sm shadow max-w-[80%]";
+          botMessage.textContent = data.answer;
+          botMessageWrapper.appendChild(botMessage);
+          chatMessages.appendChild(botMessageWrapper);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
         })
         .catch(error => {
-          const errorMessage = document.createElement("div");
-          errorMessage.textContent = "❌ Gagal kirim: " + error;
-          chatMessages.appendChild(errorMessage);
+          botWrapper.remove();
+          const errorWrapper = document.createElement("div");
+          errorWrapper.className = "flex justify-start text-red-500";
+          errorWrapper.textContent = "❌ Gagal kirim: " + error;
+          chatMessages.appendChild(errorWrapper);
         });
     }
   </script>

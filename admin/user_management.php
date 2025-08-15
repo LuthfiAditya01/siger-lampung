@@ -27,8 +27,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['hapus_dokumen'])) {
     exit();
 }
 
+// Proses form
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['tambah_user'])) {
+    $username = $_POST['username'];
+    $name = $_POST['name'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
+    $stmt = $conn->prepare("INSERT INTO users (username, name, password, is_admin) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $username, $name, $password, $is_admin);
 
+    if ($stmt->execute()) {
+        $_SESSION['alert'] = "User berhasil ditambahkan";
+    } else {
+        $_SESSION['alert'] = "Gagal menambahkan user";
+    }
+
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +67,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['hapus_dokumen'])) {
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <style>
+        .btn-cari {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
@@ -74,8 +101,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['hapus_dokumen'])) {
                 </div>
                 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow-md">
                     <div class="max-w-6xl mx-auto bg-white shadow-md p-6 rounded-lg">
+                        <!-- Tombol buka modal -->
+                        <button onclick="openModal()" class="btn-cari bg-blue-500 text-white px-4 py-2 rounded">Tambah User</button>
+                        <br><br>
+                        <!-- Modal -->
+                        <div id="modalTambahUser" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 items-center justify-center z-9999">
+                            <div class="relative w-[90%] max-w-[300px] bg-white text-black rounded-lg shadow-lg p-6">
+
+                                <!-- Tombol Close -->
+                                <button type="button" onclick="closeModal()"
+                                    class="bg-white-600 hover:bg-blue-700 text-black px-4 py-2 rounded">
+                                    &times;
+                                </button>
+
+                                <h2 class=" text-xl font-semibold mb-4">Tambah User</h2>
+
+                                    <form method="POST">
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-medium">Username</label>
+                                            <input type="text" name="username" required class="mt-1 w-full border border-gray-300 rounded p-2">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-medium">Nama</label>
+                                            <input type="text" name="name" required class="mt-1 w-full border border-gray-300 rounded p-2">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-medium">Password</label>
+                                            <input type="password" name="password" required class="mt-1 w-full border border-gray-300 rounded p-2">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="inline-flex items-center">
+                                                <input type="checkbox" name="is_admin" class="form-checkbox">
+                                                <span class="ml-2">Admin</span>
+                                            </label>
+                                        </div>
+                                        <div class="flex justify-end gap-2">
+                                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">
+                                                Batal
+                                            </button>
+                                            <button type="submit" name="tambah_user" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+                                                Simpan
+                                            </button>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+
+                        <script>
+                            function openModal() {
+                                document.getElementById('modal').classList.remove('hidden');
+                                document.getElementById('modal').classList.add('flex');
+                            }
+
+                            function closeModal() {
+                                document.getElementById('modal').classList.add('hidden');
+                                document.getElementById('modal').classList.remove('flex');
+                            }
+                        </script>
                         <div class="overflow-x-auto">
-                            <table id="tabelDokumen" class="display w-full">
+                            <table id="tabelDokumen" class="display w-full z-1000">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -117,5 +201,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['hapus_dokumen'])) {
             </div>
         </main>
     </div>
+    <script>
+        const modal = document.getElementById('modalTambahUser');
 
+        function openModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
 </body>

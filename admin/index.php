@@ -8,7 +8,16 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ../login');
     exit();
 }
+// Cek dan tampilkan alert
+if (!empty($_SESSION['alert_success'])) {
+    echo "<script>alert('" . addslashes($_SESSION['alert_success']) . "');</script>";
+    unset($_SESSION['alert_success']); // Hapus supaya tidak muncul lagi saat refresh
+}
 
+$user_id = $_SESSION['user_id'];
+$query = $conn->query("SELECT name FROM `users` WHERE id=$user_id");
+$data = $query->fetch_assoc();
+$nama_user = $data['name'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +54,7 @@ if (!isset($_SESSION['user_id'])) {
 
                 <!-- Content -->
                 <div class="bg-white shadow-md rounded-lg p-6 mb-5">
-                    <h2 class="text-2xl font-semibold mb-4">Selamat Datang di Dashboard</h2>
+                    <h2 class="text-2xl font-semibold mb-4">Hai <?=$nama_user?>! Selamat Datang di Dashboard</h2>
                     <!-- <p class="text-gray-600">You are logged in as an administrator. Use the sidebar to navigate through different sections.</p> -->
                 </div>
 

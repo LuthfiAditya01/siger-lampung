@@ -10,28 +10,51 @@ if (!isset($_SESSION['user_id'])) {
 }
 $no = 1;
 // Ambil data dokumen dari database
-$query = $conn->query("SELECT * FROM news ORDER BY tanggal_update DESC ");
+$query = $conn->query("SELECT * FROM news ORDER BY tanggal_berita DESC ");
 $dokumen = $query->fetch_all(MYSQLI_ASSOC);
 
 $query2 = $conn->query("SELECT tanggal_update FROM news ORDER BY tanggal_update DESC LIMIT 1");
-$data = $query2->fetch_assoc();
-$tanggalUpdateTerbaru = $data['tanggal_update'];
+
+if ($query2 && $query2->num_rows > 0) {
+    $data = $query2->fetch_assoc();
+    $tanggalUpdateTerbaru = $data['tanggal_update'];
+} else {
+    $tanggalUpdateTerbaru = "(Berita Belum Tersedia)";
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Path absolut ke python & file main.py
-    $python = "C:\Python313\python.exe"; // atau lokasi python environment kamu
-    $script = "C:\laragon\www\siger-lampung\scrapper\scraper-dtsen.py";
+    $python = "C:\\Python313\\python.exe";
+    $script = "C:\\laragon\\www\\siger-lampung\\scrapper\\dtsen-scraper.py";
 
-    // Jalankan script python
-    $output = shell_exec("$python $script 2>&1");
+    $command = "\"$python\" \"$script\" 2>&1";
+    $output = shell_exec($command);
 
-    // Tampilkan alert dan refresh halaman
-    echo "<script>
-        alert('Berita terbaru berhasil diambil!');
-        window.location.href = window.location.pathname;
-    </script>";
+    // Folder log
+    $logDir = __DIR__ . "/logs";
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0777, true);
+    }
+
+    if ($output !== null && stripos($output, 'Traceback') === false && trim($output) !== '') {
+        echo "<script>
+            alert('Berita terbaru berhasil diambil!');
+            window.location.href = window.location.pathname;
+        </script>";
+    } else {
+        // Simpan log error
+        $logFile = $logDir . "/scraper_error.log";
+        file_put_contents($logFile, "[" . date("Y-m-d H:i:s") . "] " . $output . PHP_EOL, FILE_APPEND);
+
+        echo "<script>
+            alert('Gagal mengambil berita terbaru! Cek log di logs/scraper_error.log');
+            window.location.href = window.location.pathname;
+        </script>";
+    }
     exit;
 }
+
+
 
 ?>
 <!DOCTYPE html>

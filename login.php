@@ -2,6 +2,11 @@
 session_start();
 require_once 'koneksi.php';
 
+if (!empty($_SESSION['alert_success'])) {
+    echo "<script>alert('" . addslashes($_SESSION['alert_success']) . "');</script>";
+    unset($_SESSION['alert_success']);
+}
+
 // Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
   header("Location: admin/index.php");
@@ -9,6 +14,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  session_start();
   $username = $_POST['username'];
   $password = $_POST['password'];
 
@@ -23,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (password_verify($password, $user['password'])) {
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['username'] = $user['username'];
+      $_SESSION['alert_success'] = "Berhasil login sebagai " . $user['username'] . "!";
       header("Location: admin/beranda");
       exit();
     } else {
@@ -32,6 +39,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $error = "Username tidak ditemukan!";
   }
 }
+
+
+// // Data akun yang mau dimasukkan
+// $username = "pemkot1871";
+// $name     = "Pemerintahan Kota Bandar Lampung";
+// $password = "pemkot1871ok";  // password mentah
+// $is_admin = 0;
+
+// // Hash password-nya dulu
+// $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+// // Query insert
+// $sql = "INSERT INTO users (username, name, password, is_admin) 
+//         VALUES (?, ?, ?, ?)";
+
+// $stmt = $conn->prepare($sql);
+// $stmt->bind_param("sssi", $username, $name, $hashedPassword, $is_admin);
+
+// if ($stmt->execute()) {
+//     echo "Akun berhasil dibuat.";
+// } else {
+//     echo "Error: " . $stmt->error;
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,4 +1,6 @@
 fastapi
+google-generativeai
+ipython
 uvicorn
 langchain
 langchain-ollama

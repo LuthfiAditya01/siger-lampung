@@ -3,3 +3,6 @@ pandas
 streamlit
 selectolax
 mysql-connector-python
+requests
+beautifulsoup4
+

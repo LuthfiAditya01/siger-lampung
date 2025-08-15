@@ -198,21 +198,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['hapus_dokumen'])) {
                                 </form>
                             </div>
                         </div>
-                        <!-- Modal Preview File -->
-                        <!-- <div id="modalPreview" class="modal-overlay hidden">
-                            <div class="modal modal-open" style="min-width: 800px; height: 500px; overflow: auto;">
-                                <div class="modal-header">
-                                    <h3>Judul Modal</h3>
-                                    <button onclick="closeModal()">×</button>
-                                </div>
-                                <div id="previewContent" class="modal-body">
-                                </div>
-                            </div>
-                        </div> -->
 
                         <!-- Modal Preview File -->
-                        <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
-                            <div class="bg-white rounded-lg shadow-lg w-full max-w-[700px] max-h-[500px] overflow-y-auto">
+                        <div id="modalPreview" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 w-[700px] h-[500px]">
+                            <div class="bg-white rounded-lg shadow-lg w-full w-[700px] h-[500px] overflow-y-auto">
                                 <div class="flex justify-between items-center p-4 border-b">
                                     <h3 class="text-lg font-semibold" id="modalTitle">Preview File</h3>
                                     <button onclick="closePreview()" class="text-gray-600 hover:text-black text-2xl leading-none">&times;</button>
