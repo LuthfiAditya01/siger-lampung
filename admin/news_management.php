@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Berita - Siger Lampung</title>
+    <title>Manajemen Berita - Siger Bandar Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Berita</th>
+                                        <th>Sumber</th>
                                         <th>Tanggal Berita</th>
                                         <th>Tanggal Update</th>
                                         <th>Link</th>
@@ -136,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <td><?= $no;
                                                 $no++ ?></td>
                                             <td><?= $d['nama'] ?></td>
+                                            <td><?= $d['sumber'] ?></td>
                                             <td><?= $d['tanggal_berita'] ?></td>
                                             <td><?= $d['tanggal_update'] ?></td>
                                             <td>

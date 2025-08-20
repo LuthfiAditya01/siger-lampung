@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['tambah_user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen User - Siger Lampung</title>
+    <title>Manajemen User - Siger Bandar Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->

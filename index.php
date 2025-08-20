@@ -5,38 +5,6 @@ include 'koneksi.php';
 $hasil = null;
 $pesan = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Jika tombol Reset ditekan
-  if (isset($_POST['reset'])) {
-    // Kosongkan hasil pencarian dan pesan
-    $hasil = null;
-    $pesan = '';
-    $_POST['kk'] = '';
-    $_POST['nik'] = '';
-  } else {
-    $kk = $_POST['kk'] ?? '';
-    $nik = $_POST['nik'] ?? '';
-
-    if (strlen($kk) !== 16 || strlen($nik) !== 16) {
-      $pesan = "Nomor KK dan NIK harus 16 digit.";
-    } else {
-      $query = "SELECT nomor_kartu_keluarga, nomor_induk_kependudukan, desil_nasional 
-                      FROM dtsen 
-                      WHERE nomor_kartu_keluarga = ? AND nomor_induk_kependudukan = ? 
-                      LIMIT 1";
-      $stmt = $conn->prepare($query);
-      $stmt->bind_param("ss", $kk, $nik);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      $hasil = $result->fetch_assoc();
-
-      if (!$hasil) {
-        $pesan = "Data Tidak Ditemukan";
-      }
-    }
-  }
-}
-
 $query = "SELECT * FROM news ORDER BY tanggal_berita DESC LIMIT 10";
 $result = mysqli_query($conn, $query);
 $berita = [];
@@ -52,7 +20,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIGER LAMPUNG - Platform Data Statistik Provinsi Lampung</title>
+  <title>SIGER BANDAR LAMPUNG - Platform Data Statistik Provinsi Lampung</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/output.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
@@ -63,6 +31,11 @@ while ($row = mysqli_fetch_assoc($result)) {
   <link href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/outline.min.css" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+  <!-- Chart.js harus ada sebelum script bikin grafik -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
   <style>
     html {
@@ -246,7 +219,7 @@ while ($row = mysqli_fetch_assoc($result)) {
   <nav class="navbar">
     <div class="nav-container">
       <div class="nav-brand">
-        <h1>SIGER LAMPUNG</h1>
+        <h1>SIGER BANDAR LAMPUNG</h1>
       </div>
 
       <!-- Desktop Navigation -->
@@ -383,14 +356,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         <div class="about-card-1">
           <div class="card-content">
-            <h3 class="card-title">SIGER LAMPUNG</h3>
+            <h3 class="card-title">SIGER BANDAR LAMPUNG</h3>
             <ul class="card-list">
-              <li>SIGER LAMPUNG (Sinergi Gerak Bersama untuk Layanan Akurat Menuju Performa Unggul) adalah inisiatif BPS
+              <li>SIGER BANDAR LAMPUNG (Sinergi Gerak Bersama Bandar Lampung) adalah inisiatif BPS
                 Kota Bandar Lampung untuk mendorong pembinaan statistik sektoral yang terstruktur dan berkelanjutan.
                 Program ini melibatkan OPD agar bersama-sama menghasilkan statistik sektoral berkualitas sesuai Sistem
                 Statistik Nasional (SSN), demi layanan yang akurat dan profesional.
               </li>
-              <li> Melalui SIGER LAMPUNG, BPS memperkuat kolaborasi lintas instansi guna mengatasi tantangan pembinaan
+              <li> Melalui SIGER BANDAR LAMPUNG, BPS memperkuat kolaborasi lintas instansi guna mengatasi tantangan pembinaan
                 statistik sektoral dan meningkatkan kualitas pelayanan, agar sejalan dengan standar nasional dan
                 mendorong kinerja unggul.
               </li>
@@ -417,8 +390,6 @@ while ($row = mysqli_fetch_assoc($result)) {
       </div>
     </div>
   </section>
-
-
 
   <!-- Dashboard Section -->
   <section id="dashboard" class="dashboard-section">
@@ -479,74 +450,38 @@ while ($row = mysqli_fetch_assoc($result)) {
       </h2>
 
       <div class="tabulasi-card">
-        <!-- <div class="dashboard-pencarian">
-          <form action="" method="post">
-            <div>
-              <label class="block mb-2 text-sm text-white font-medium">Masukkan Nomor KK</label>
-              <input type="number" name="kk"
-                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['kk'] ?? '') ?>"
-                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm"
-                required>
-            </div>
 
-            <div>
-              <label class="block mb-2 text-sm text-white font-medium">Masukkan NIK</label>
-              <input type="number" name="nik"
-                value="<?= isset($_POST['reset']) ? '' : htmlspecialchars($_POST['nik'] ?? '') ?>"
-                class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm"
-                required>
-            </div>
-
-            <div class="button-group">
-              <button type="submit" class="custom-btn-f">Cari</button>
-              <button type="submit" name="reset" value="1" class="custom-btn-f bg-gray-200 hover:bg-gray-300">
-                Reset
-              </button>
-            </div>
-          </form>
-
-          <?php if ($hasil): ?>
-            <div class="mt-6 text-sm text-gray-800 bg-green-50 p-4 rounded">
-              <p><strong>Nomor KK:</strong> <?= htmlspecialchars($hasil['nomor_kartu_keluarga']) ?></p>
-              <p><strong>NIK:</strong> <?= htmlspecialchars($hasil['nomor_induk_kependudukan']) ?></p>
-              <p><strong>Desil:</strong> <?= htmlspecialchars($hasil['desil_nasional']) ?></p>
-            </div>
-          <?php elseif ($pesan): ?>
-            <div class="mt-6 text-sm text-red-600 bg-red-50 p-4 rounded">
-              <?= $pesan ?>
-            </div>
-          <?php endif; ?>
-        </div> -->
-        <!-- <div class="max-w-4xl mx-auto px-4">
-          <div class="bg-white rounded-xl shadow-md p-6 h-[500px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
+        <!-- <div class="max-w-8xl mx-auto px-4">
+          <div class="bg-white rounded-xl shadow-md p-6 h-[400px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
             <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 flex flex-col">
-              <div class="flex items-start">
-                <div class="bg-gray-200 px-4 py-2 rounded-lg max-w-[80%]">
-                  Halo! Ada yang bisa saya bantu?
-                </div>
-              </div>
             </div>
             <form id="chat-form" class="flex gap-2" onsubmit="kirimPesan(event)">
-              <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pesan...">
-              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
+              <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pertanyaan kamu disini...">
+              <button type="submit" class="bg-blue-600 text-white px-4 py-4 rounded-lg hover:bg-blue-700">Kirim</button>
             </form>
           </div>
         </div> -->
         <div class="max-w-8xl mx-auto px-4">
           <div class="bg-white rounded-xl shadow-md p-6 h-[400px] overflow-hidden flex flex-col mx-auto max-h-[400px]">
             <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 flex flex-col">
-              <div class="flex items-start">
-                <div class="bg-gray-200 px-4 py-2 rounded-sm shadow max-w-[80%]">
-                  Halo! Ada yang bisa saya bantu?
-                </div>
-              </div>
+              <!-- tempat chat bubble -->
             </div>
-            <form id="chat-form" class="flex gap-2" onsubmit="kirimPesan(event)">
-              <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis pesan...">
-              <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Kirim</button>
+            <form id="chat-form" class="flex gap-2 relative" onsubmit="kirimPesan(event)">
+              <div class="flex-1 relative">
+                <input
+                  type="text"
+                  id="user-input"
+                  class="w-full border border-gray-300 rounded-lg px-4 py-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Tulis pertanyaan kamu disini..."
+                  autocomplete="off">
+                <!-- kotak suggestion -->
+                <div id="suggestions" class="absolute left-0 right-0 bottom-full bg-white border border-gray-200 rounded-lg mb-1 shadow-lg hidden max-h-40 overflow-y-auto z-10"></div>
+              </div>
+              <button type="submit" class="bg-blue-600 text-white px-4 py-4 rounded-lg hover:bg-blue-700">Kirim</button>
             </form>
           </div>
         </div>
+
       </div>
 
   </section>
@@ -660,7 +595,7 @@ while ($row = mysqli_fetch_assoc($result)) {
       <div class="footer-content">
         <p class="footer-text">
           HAK CIPTA &copy;
-          <span class="footer-brand">SIGER LAMPUNG DTSEN</span>
+          <span class="footer-brand">SIGER BANDAR LAMPUNG DTSEN</span>
         </p>
         <p class="footer-copyright">&copy; 2024 Semua hak dilindungi undang-undang</p>
       </div>
@@ -776,9 +711,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 
       // Pesan user di kanan
       const userWrapper = document.createElement("div");
-      userWrapper.className = "flex justify-end";
+      userWrapper.className = "flex justify-end px-4 py-2 mb-2";
       const userMessage = document.createElement("div");
-      userMessage.className = "bg-blue-100 px-4 py-2 rounded-sm shadow max-w-[80%]";
+      userMessage.className = "bg-blue-100 px-4 py-3 m-2 rounded-md shadow max-w-[80%]";
       userMessage.textContent = pesan;
       userWrapper.appendChild(userMessage);
       chatMessages.appendChild(userWrapper);
@@ -788,9 +723,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 
       // Loading bubble bot di kiri
       const botWrapper = document.createElement("div");
-      botWrapper.className = "flex justify-start";
+      botWrapper.className = "flex justify-start px-4 py-2 mb-2";
       const typingMessage = document.createElement("div");
-      typingMessage.className = "bg-gray-100 px-4 py-2 rounded-sm shadow max-w-[80%] flex items-center gap-2";
+      typingMessage.className = "bg-gray-100 px-4 py-3 m-2 rounded-md shadow max-w-[80%] flex items-center gap-2";
       typingMessage.innerHTML = `<span class="dot-typing"></span>`;
       botWrapper.appendChild(typingMessage);
       chatMessages.appendChild(botWrapper);
@@ -809,9 +744,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         .then(data => {
           botWrapper.remove();
           const botMessageWrapper = document.createElement("div");
-          botMessageWrapper.className = "flex justify-start";
+          botMessageWrapper.className = "flex justify-start px-4 py-2 mb-2";
           const botMessage = document.createElement("div");
-          botMessage.className = "bg-gray-200 px-4 py-2 rounded-sm shadow max-w-[80%]";
+          botMessage.className = "bg-gray-200 px-4 py-3 m-2 rounded-md shadow max-w-[80%]";
           botMessage.textContent = data.answer;
           botMessageWrapper.appendChild(botMessage);
           chatMessages.appendChild(botMessageWrapper);
@@ -826,6 +761,80 @@ while ($row = mysqli_fetch_assoc($result)) {
         });
     }
   </script>
+  <!-- Pertanyaan saran -->
+  <script>
+    let pertanyaanList = [];
+
+    // Ambil data history.json
+    fetch("ai-backend/history.json")
+      .then(res => res.json())
+      .then(data => {
+        // hitung frekuensi tiap pertanyaan
+        let freq = {};
+        data.forEach(item => {
+          let q = item[0].trim();
+          let key = q.toLowerCase();
+          if (!freq[key]) {
+            freq[key] = {
+              text: q,
+              count: 0
+            };
+          }
+          freq[key].count++;
+        });
+
+        // convert ke array lalu sort berdasarkan frekuensi
+        pertanyaanList = Object.values(freq).sort((a, b) => b.count - a.count);
+
+        // console.log("Pertanyaan berdasarkan frekuensi:", pertanyaanList);
+      })
+      .catch(err => console.error("Gagal load history.json:", err));
+
+    const userInput = document.getElementById("user-input");
+    const suggestionsBox = document.getElementById("suggestions");
+
+    userInput.addEventListener("input", () => {
+      const query = userInput.value.toLowerCase();
+      suggestionsBox.innerHTML = "";
+
+      if (!query) {
+        suggestionsBox.classList.add("hidden");
+        return;
+      }
+
+      // filter pertanyaan berdasarkan input user
+      const filtered = pertanyaanList
+        .filter(p => p.text.toLowerCase().includes(query))
+        .slice(0, 5); // ambil max 5
+
+      if (filtered.length === 0) {
+        suggestionsBox.classList.add("hidden");
+        return;
+      }
+
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.textContent = `${item.text}`;
+        div.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
+        div.onclick = () => {
+          userInput.value = item.text;
+          suggestionsBox.classList.add("hidden");
+          userInput.focus();
+        };
+        suggestionsBox.appendChild(div);
+      });
+
+      suggestionsBox.classList.remove("hidden");
+    });
+
+    // biar suggestions hilang pas klik di luar
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("#chat-form")) {
+        suggestionsBox.classList.add("hidden");
+      }
+    });
+  </script>
+
   <!-- carousel js -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {

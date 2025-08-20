@@ -41,27 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-// // Data akun yang mau dimasukkan
-// $username = "pemkot1871";
-// $name     = "Pemerintahan Kota Bandar Lampung";
-// $password = "pemkot1871ok";  // password mentah
-// $is_admin = 0;
 
-// // Hash password-nya dulu
-// $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-// // Query insert
-// $sql = "INSERT INTO users (username, name, password, is_admin) 
-//         VALUES (?, ?, ?, ?)";
-
-// $stmt = $conn->prepare($sql);
-// $stmt->bind_param("sssi", $username, $name, $hashedPassword, $is_admin);
-
-// if ($stmt->execute()) {
-//     echo "Akun berhasil dibuat.";
-// } else {
-//     echo "Error: " . $stmt->error;
-// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="min-h-screen min-w-max flex items-center justify-center" style="background-color:#eb891b">
     <div class="bg-white p-8 rounded-lg shadow-lg w-96">
       <div class="flex justify-center mb-6">
-        <img src="img/logo.jpg" class="w-32 h-auto" alt="Logo Siger Lampung">
+        <img src="img/logo.jpg" class="w-32 h-auto" alt="Logo Siger Bandar Lampung">
       </div>
       <?php if (isset($error)): ?>
         <div class="mb-4 p-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">

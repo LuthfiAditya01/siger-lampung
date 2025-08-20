@@ -33,7 +33,7 @@ $is_admin = $data_adm['is_admin'];
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center">
                     <img src="../img/logo.jpg" alt="Logo" class="h-8 w-auto mr-2">
-                    <span class="text-xl font-semibold sidebar-text">Siger Lampung</span>
+                    <span class="text-xl font-semibold sidebar-text">Siger Bandar Lampung</span>
                 </div>
             </div>
 

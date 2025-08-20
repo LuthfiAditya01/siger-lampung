@@ -9,33 +9,73 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// setelah session_start();
+$a = $_SESSION['captcha_a'] ?? null;
+$b = $_SESSION['captcha_b'] ?? null;
+
+// Generate captcha HANYA jika belum ada (pertama kali buka halaman)
+if ($a === null || $b === null) {
+    $a = random_int(1, 9);
+    $b = random_int(1, 9);
+    $_SESSION['captcha_a'] = $a;
+    $_SESSION['captcha_b'] = $b;
+    $_SESSION['captcha_math'] = $a + $b;
+}
+
+// Pastikan variabel $a dan $b yang dipakai di <label> form
+// SELALU diambil dari session yang sama:
+$a = $_SESSION['captcha_a'];
+$b = $_SESSION['captcha_b'];
+
 $hasil_list = [];
 $hasil_terpilih = null;
 $pesan = '';
 
+// Load .env
+$config = parse_ini_file(__DIR__ . '/../.env');
+$encryption_key = $config['ENCRYPTION_KEY'];
+
+// Fungsi dekripsi
+function decrypt_data($encrypted_data, $key)
+{
+    if (!$encrypted_data) return '';
+    $data = base64_decode($encrypted_data);
+    $iv = substr($data, 0, 16);
+    $encrypted = substr($data, 16);
+    return openssl_decrypt($encrypted, 'aes-256-cbc', $key, 0, $iv);
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Kalau user klik tombol "Pilih" dari tabel
+
+    // Jika tombol reset ditekan
     if (isset($_POST['reset'])) {
         $hasil_list = [];
         $hasil_terpilih = null;
         $pesan = '';
+
+        // Jika tombol pilih ditekan (step 2, tidak perlu verifikasi captcha)
     } elseif (isset($_POST['pilih_nik'])) {
         $nik_pilih = $_POST['pilih_nik'];
 
-        $stmt = $conn->prepare("SELECT * FROM dtsen WHERE nomor_induk_kependudukan = ? LIMIT 1");
-        $stmt->bind_param("s", $nik_pilih);
+        // Gunakan hash untuk cari NIK
+        $nik_hash = hash('sha256', $nik_pilih);
+        $stmt = $conn->prepare("SELECT * FROM dtsen WHERE nik_hash = ? LIMIT 1");
+        $stmt->bind_param("s", $nik_hash);
         $stmt->execute();
         $result = $stmt->get_result();
         $hasil_terpilih = $result->fetch_assoc();
 
-        if (!$hasil_terpilih) {
-            $pesan = "Data yang dipilih tidak ditemukan.";
-        } else {
+        if ($hasil_terpilih) {
+            // Dekripsi data terenkripsi
+            $hasil_terpilih['nomor_kartu_keluarga'] = decrypt_data($hasil_terpilih['kk_enkripsi'], $encryption_key);
+            $hasil_terpilih['nomor_induk_kependudukan'] = decrypt_data($hasil_terpilih['nik_enkripsi'], $encryption_key);
+            $hasil_terpilih['alamat'] = decrypt_data($hasil_terpilih['alamat_enkripsi'], $encryption_key);
+            $hasil_terpilih['desil_nasional'] = decrypt_data($hasil_terpilih['desil_enkripsi'], $encryption_key);
+
             $nama_kelurahan = $hasil_terpilih['kelurahan_desa'] ?? '';
             $kode_kelurahan = '';
 
             if ($nama_kelurahan) {
-                // Cari kode_kelurahan dari nama_kelurahan
                 $stmt_kode = $conn->prepare("SELECT kode_kelurahan FROM wilayah_kelurahan WHERE nama_kelurahan = ? LIMIT 1");
                 $stmt_kode->bind_param("s", $nama_kelurahan);
                 $stmt_kode->execute();
@@ -43,14 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt_kode->fetch();
                 $stmt_kode->close();
 
-                // Jika kode_kelurahan ditemukan, ambil data wilayah lengkap
                 if ($kode_kelurahan) {
                     $sql_wil = "
-                        SELECT 
-                            kp.nama_provinsi, 
-                            kb.nama_kabupaten, 
-                            kc.nama_kecamatan, 
-                            kl.nama_kelurahan 
+                        SELECT kp.nama_provinsi, kb.nama_kabupaten, kc.nama_kecamatan, kl.nama_kelurahan 
                         FROM wilayah_kelurahan kl
                         JOIN wilayah_kecamatan kc ON kl.kode_kecamatan = kc.kode_kecamatan
                         JOIN wilayah_kabupaten kb ON kc.kode_kabupaten = kb.kode_kabupaten
@@ -65,46 +100,139 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $wilayah = $result->fetch_assoc();
                 }
             }
-        }
-    } else {
-        // Proses pencarian awal
-        $kode_kelurahan = $_POST['kelurahan'] ?? '';
-        $keyword = trim($_POST['keyword'] ?? '');
-
-        if (!$kode_kelurahan || !$keyword) {
-            $pesan = "Mohon lengkapi semua kolom pencarian.";
         } else {
-            // Ambil nama kelurahan
-            $stmt_kel = $conn->prepare("SELECT nama_kelurahan FROM wilayah_kelurahan WHERE kode_kelurahan = ?");
-            $stmt_kel->bind_param("s", $kode_kelurahan);
-            $stmt_kel->execute();
-            $stmt_kel->bind_result($nama_kelurahan);
-            $stmt_kel->fetch();
-            $stmt_kel->close();
+            $pesan = "Data yang dipilih tidak ditemukan.";
+        }
 
-            if (!$nama_kelurahan) {
-                $pesan = "Kelurahan tidak ditemukan.";
+        // Jika melakukan pencarian (step 1, WAJIB verifikasi captcha)
+    } else {
+        // Verifikasi captcha hanya untuk pencarian
+        if (!isset($_POST['captcha']) || !isset($_SESSION['captcha_math'])) {
+            $pesan = "Sesi verifikasi kedaluwarsa. Muat ulang halaman.";
+        } elseif ((int)$_POST['captcha'] !== (int)$_SESSION['captcha_math']) {
+            $pesan = "Verifikasi salah, silakan coba lagi.";
+
+            // JANGAN regenerate di sini, biarkan $a,$b tetap sama agar user bisa coba lagi
+            // (form akan menampilkan $a dan $b dari session yang sama)
+        } else {
+            $kode_kelurahan = $_POST['kelurahan'] ?? '';
+            $keyword = trim($_POST['keyword'] ?? '');
+
+            if (!$kode_kelurahan || !$keyword) {
+                $pesan = "Mohon lengkapi semua kolom pencarian.";
             } else {
-                // Lakukan pencarian
-                $sql = "SELECT * FROM dtsen 
+                $stmt_kel = $conn->prepare("SELECT nama_kelurahan FROM wilayah_kelurahan WHERE kode_kelurahan = ?");
+                $stmt_kel->bind_param("s", $kode_kelurahan);
+                $stmt_kel->execute();
+                $stmt_kel->bind_result($nama_kelurahan);
+                $stmt_kel->fetch();
+                $stmt_kel->close();
+
+                if (!$nama_kelurahan) {
+                    $pesan = "Kelurahan tidak ditemukan.";
+                } else {
+                    // Cek hash NIK dan KK untuk pencarian cepat
+                    // $kk_hash = hash('sha256', $keyword);
+                    // $nik_hash = hash('sha256', $keyword);
+
+                    // $sql = "SELECT * FROM dtsen 
+                    //     WHERE kelurahan_desa = ?
+                    //     AND (
+                    //         kk_hash = ? OR 
+                    //         nik_hash = ? OR 
+                    //         nama LIKE ? OR 
+                    //         nama_kepala_keluarga LIKE ?
+                    //     )";
+                    // $stmt = $conn->prepare($sql);
+                    // $like = '%' . $keyword . '%';
+                    // $stmt->bind_param("sssss", $nama_kelurahan, $kk_hash, $nik_hash, $like, $like);
+                    // $stmt->execute();
+                    // $result = $stmt->get_result();
+                    // $hasil_list = $result->fetch_all(MYSQLI_ASSOC);
+
+                    // // Dekripsi data sebelum ditampilkan
+                    // foreach ($hasil_list as &$item) {
+                    //     $item['nomor_kartu_keluarga'] = decrypt_data($item['kk_enkripsi'], $encryption_key);
+                    //     $item['nomor_induk_kependudukan'] = decrypt_data($item['nik_enkripsi'], $encryption_key);
+                    //     $item['alamat'] = decrypt_data($item['alamat_enkripsi'], $encryption_key);
+                    //     $item['desil_nasional'] = decrypt_data($item['desil_enkripsi'], $encryption_key);
+                    // }
+
+                    // if (empty($hasil_list)) {
+                    //     $pesan = "Data tidak ditemukan.";
+                    // }
+                    $kk_hash = hash('sha256', $keyword);
+                    $nik_hash = hash('sha256', $keyword);
+                    $nama_hash = hash('sha256', $keyword);
+                    $namakk_hash = hash('sha256', $keyword);
+
+                    $sql = "SELECT * FROM dtsen 
                         WHERE kelurahan_desa = ?
                         AND (
-                            nomor_kartu_keluarga = ? OR 
-                            nomor_induk_kependudukan = ? OR 
-                            nama LIKE ? OR 
-                            nama_kepala_keluarga LIKE ?
+                            kk_hash = ? OR 
+                            nik_hash = ? OR 
+                            nama_hash = ? OR
+                            namakk_hash = ?
                         )";
-                $stmt = $conn->prepare($sql);
-                $like = '%' . $keyword . '%';
-                $stmt->bind_param("sssss", $nama_kelurahan, $keyword, $keyword, $like, $like);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $hasil_list = $result->fetch_all(MYSQLI_ASSOC);
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("sssss", $nama_kelurahan, $kk_hash, $nik_hash, $nama_hash, $namakk_hash);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $hasil_list = $result->fetch_all(MYSQLI_ASSOC);
 
-                if (empty($hasil_list)) {
-                    $pesan = "Data tidak ditemukan.";
+                    // Dekripsi semua field yang perlu
+                    foreach ($hasil_list as &$item) {
+                        $item['nama'] = decrypt_data($item['nama_enkripsi'], $encryption_key);
+                        $item['nama_kepala_keluarga'] = decrypt_data($item['namakk_enkripsi'], $encryption_key);
+                        $item['nomor_kartu_keluarga'] = decrypt_data($item['kk_enkripsi'], $encryption_key);
+                        $item['nomor_induk_kependudukan'] = decrypt_data($item['nik_enkripsi'], $encryption_key);
+                        $item['alamat'] = decrypt_data($item['alamat_enkripsi'], $encryption_key);
+                        $item['desil_nasional'] = decrypt_data($item['desil_enkripsi'], $encryption_key);
+                    }
+
+                    // Kalau tidak ketemu via hash, lakukan LIKE manual
+                    if (empty($hasil_list)) {
+                        $sql2 = "SELECT * FROM dtsen WHERE kelurahan_desa = ?";
+                        $stmt2 = $conn->prepare($sql2);
+                        $stmt2->bind_param("s", $nama_kelurahan);
+                        $stmt2->execute();
+                        $result2 = $stmt2->get_result();
+                        $all_data = $result2->fetch_all(MYSQLI_ASSOC);
+
+                        $filtered = [];
+                        foreach ($all_data as &$row) {
+                            $row['nama'] = decrypt_data($row['nama_enkripsi'], $encryption_key);
+                            $row['nama_kepala_keluarga'] = decrypt_data($row['namakk_enkripsi'], $encryption_key);
+
+                            if (
+                                stripos($row['nama'], $keyword) !== false ||
+                                stripos($row['nama_kepala_keluarga'], $keyword) !== false
+                            ) {
+                                // tambahkan juga dekripsi lengkap kalau perlu
+                                $row['nomor_kartu_keluarga'] = decrypt_data($row['kk_enkripsi'], $encryption_key);
+                                $row['nomor_induk_kependudukan'] = decrypt_data($row['nik_enkripsi'], $encryption_key);
+                                $row['alamat'] = decrypt_data($row['alamat_enkripsi'], $encryption_key);
+                                $row['desil_nasional'] = decrypt_data($row['desil_enkripsi'], $encryption_key);
+
+                                $filtered[] = $row;
+                            }
+                        }
+
+                        $hasil_list = $filtered;
+                    }
+
+                    if (empty($hasil_list)) {
+                        $pesan = "Data tidak ditemukan.";
+                    }
                 }
             }
+
+            // === Regenerate captcha untuk submit berikutnya (HANYA setelah verifikasi sukses) ===
+            $a = random_int(1, 9);
+            $b = random_int(1, 9);
+            $_SESSION['captcha_a'] = $a;
+            $_SESSION['captcha_b'] = $b;
+            $_SESSION['captcha_math'] = $a + $b;
         }
     }
 }
@@ -117,7 +245,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Pencarian - Siger Lampung</title>
+    <title>Admin Pencarian - Siger Bandar Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
@@ -262,7 +390,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <!-- 2 kolom wilayah -->
                         <div class="form-row">
                             <div class="form-col">
-                                <label>Provinsi</label>
+                                <label>Provinsi<span style="color:red !important">*</span></label>
                                 <select name="provinsi" id="provinsi" class="form-select" required>
                                     <option value="">Pilih Provinsi</option>
                                     <?php
@@ -273,7 +401,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     ?>
                                 </select>
 
-                                <label>Kecamatan</label>
+                                <label>Kecamatan<span style="color:red !important">*</span></label>
                                 <select name="kecamatan" id="kecamatan" class="form-select" required>
                                     <option value="">Pilih Kecamatan</option>
                                 </select>
@@ -281,12 +409,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </div>
 
                             <div class="form-col">
-                                <label>Kabupaten/Kota</label>
+                                <label>Kabupaten/Kota<span style="color:red !important">*</span></label>
                                 <select name="kabupaten" id="kabupaten" class="form-select" required>
                                     <option value="">Pilih Kabupaten</option>
                                 </select>
 
-                                <label>Kelurahan</label>
+                                <label>Kelurahan<span style="color:red !important">*</span></label>
                                 <select name="kelurahan" id="kelurahan" class="form-select" required>
                                     <option value="">Pilih Kelurahan</option>
                                 </select>
@@ -295,8 +423,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                         <!-- Input Keyword -->
                         <div class="form-group">
-                            <label>Nomor KK / NIK / Nama</label>
+                            <label>Nomor KK / NIK / Nama<span style="color:red !important">*</span></label>
                             <input type="text" name="keyword" class="form-input" placeholder="Masukkan kata kunci" required>
+                        </div>
+
+                        <!-- Captcha hitungan -->
+                        <div class="form-group">
+                            <label>Hitung: <?= $a ?> + <?= $b ?> = ?<span style="color:red !important">*</span></label>
+                            <input type="number" name="captcha" required placeholder="Jawaban"
+                                class="form-input block w-full border-gray-300 rounded-md shadow-sm">
                         </div>
 
                         <!-- Tombol -->
@@ -392,20 +527,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                             <th class="border p-2">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php foreach ($hasil_list as $i => $row): ?>
-                                            <tr>
+                                    <tbody> <?php foreach ($hasil_list as $i => $row): ?> <tr>
                                                 <td class="border p-2 text-center"><?= $i + 1 ?></td>
                                                 <td class="border p-2"><?= htmlspecialchars($row['nomor_induk_kependudukan']) ?></td>
                                                 <td class="border p-2"><?= htmlspecialchars($row['nomor_kartu_keluarga']) ?></td>
                                                 <td class="border p-2"><?= htmlspecialchars($row['nama']) ?></td>
                                                 <td class="border p-2"><?= htmlspecialchars($row['nama_kepala_keluarga']) ?></td>
-                                                <td class="border p-2 text-center">
-                                                    <button type="submit" name="pilih_nik" value="<?= htmlspecialchars($row['nomor_induk_kependudukan']) ?>" class="btn-cari">Pilih</button>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                                <td class="border p-2 text-center"> <button type="submit" name="pilih_nik" value="<?= htmlspecialchars($row['nomor_induk_kependudukan']) ?>" class="btn-cari">Pilih</button> </td>
+                                            </tr> <?php endforeach; ?>
                                     </tbody>
+
                                 </table>
                             </div>
                         </form>
@@ -424,7 +555,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <?php endif; ?>
 
                     <?php if (!empty($pesan)): ?>
-                        <div class="notif-error"><?= $pesan ?></div>
+                        <!-- <div class="notif-error"><?= $pesan ?></div> -->
                     <?php endif; ?>
 
 

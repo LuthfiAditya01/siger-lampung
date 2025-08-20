@@ -18,7 +18,7 @@ $result = $conn->query($query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Pencarian - Siger Lampung</title>
+    <title>Admin Data - Siger Bandar Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
 
@@ -43,7 +43,7 @@ $result = $conn->query($query);
 
     <style>
         body {
-            font-size: 12px;
+            /* font-size: 12px; */
             /* Ukuran font kecil */
             font-family: Arial, sans-serif;
         }
@@ -95,7 +95,7 @@ $result = $conn->query($query);
                                     <th>Kelurahan/Desa</th>
                                     <th>No KK</th>
                                     <th>NIK</th>
-                                    <th>Desil Nasional</th>
+                                    <th>Desil</th>
                                     <th>Nama</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Tanggal Lahir</th>
@@ -128,18 +128,18 @@ $result = $conn->query($query);
                             serverSide: true,
                             scrollX: true,
                             ajax: "load_data.php",
-                            dom: 'Bfrtip',
-                            buttons: [{
-                                    extend: 'csvHtml5',
-                                    text: 'Download CSV',
-                                    className: 'btn btn-sm btn-primary'
-                                },
-                                {
-                                    extend: 'excelHtml5',
-                                    text: 'Download Excel',
-                                    className: 'btn btn-sm btn-success'
-                                }
-                            ]
+                            // dom: 'Bfrtip',
+                            // buttons: [{
+                            //         extend: 'csvHtml5',
+                            //         text: 'Download CSV',
+                            //         className: 'btn btn-sm btn-primary'
+                            //     },
+                            //     {
+                            //         extend: 'excelHtml5',
+                            //         text: 'Download Excel',
+                            //         className: 'btn btn-sm btn-success'
+                            //     }
+                            // ]
                         });
                     </script>
                 </div>

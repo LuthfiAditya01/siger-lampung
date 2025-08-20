@@ -807,24 +807,34 @@ def insert_news_to_db(judul, tanggal_berita, link, sumber):
         # Cek apakah link sudah ada
         cursor.execute("SELECT COUNT(*) FROM news WHERE link = %s", (link,))
         (count,) = cursor.fetchone()
+
+        today_str = datetime.now().strftime("%Y-%m-%d")
+
         if count > 0:
-            # print(f"Skip insert, link sudah ada: {link}")
-            return  # keluar dari fungsi tanpa insert
+            # Update tanggal_update jika link sudah ada
+            update_query = """
+                UPDATE news
+                SET tanggal_update = %s
+                WHERE link = %s
+            """
+            cursor.execute(update_query, (today_str, link))
+            # print(f"Update tanggal_update untuk: {link}")
+        else:
+            # Insert data baru
+            insert_query = """
+                INSERT INTO news (nama, tanggal_berita, tanggal_update, link, sumber)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+            values = (
+                judul,              # nama
+                tanggal_berita,     # tanggal_berita
+                today_str,          # tanggal_update
+                link,               # link
+                sumber              # sumber
+            )
+            cursor.execute(insert_query, values)
+            # print(f"Berhasil insert: {judul}")
 
-        # Kalau belum ada, insert
-        query = """
-        INSERT INTO news (nama, tanggal_berita, tanggal_update, link, sumber)
-        VALUES (%s, %s, %s, %s, %s)
-        """
-        values = (
-            judul,                                # nama
-            tanggal_berita,                       # tanggal_berita
-            datetime.now().strftime("%Y-%m-%d"),  # tanggal_update (hari ini)
-            link,                                 # link
-            sumber                                # sumber
-        )
-
-        cursor.execute(query, values)
         conn.commit()
         # print(f"Berhasil insert: {judul}")
 

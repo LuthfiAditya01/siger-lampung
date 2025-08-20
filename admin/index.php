@@ -25,7 +25,7 @@ $nama_user = $data['name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Siger Lampung</title>
+    <title>Admin Dashboard - Siger Bandar Lampung</title>
     <link rel="stylesheet" href="../css/output.css" />
     <!-- Add Heroicons via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
